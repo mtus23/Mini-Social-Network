@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/dto/ArticleDTO.java</file>
+            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/controller/LogoutController.java</file>
+            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/controller/MainController.java</file>
+            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/listener/ContextListener.java</file>
+            <file>file:/D:/lab%20web/J3LP0010/web/articleDetail.jsp</file>
+            <file>file:/D:/lab%20web/J3LP0010/web/createArticle.jsp</file>
+            <file>file:/D:/lab%20web/J3LP0010/web/search.jsp</file>
+            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/controller/ShowArticleDetailController.java</file>
+            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/controller/SearchController.java</file>
+            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/dto/UserDTO.java</file>
+            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/controller/CreateArticleController.java</file>
+            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/dao/ArticleDAO.java</file>
+        </group>
+    </open-files>
+</project-private>
