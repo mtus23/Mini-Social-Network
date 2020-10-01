@@ -23,14 +23,24 @@
                 resize: none;
                 white-space: pre-wrap;
             }
+            .noti{
+                margin-right: auto !important;
+                margin-left: 10px;
+            }
+            
         </style>
     </head>
     <body>
-
+        <c:if test="${empty sessionScope.User}">
+            <c:redirect url="login.jsp"></c:redirect>
+        </c:if>
+        <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+            <a class="nav-item" href="search.jsp">Search Page</a>
+            <a class="nav-item noti" href="MainController?btnAction=showNoti">My Notification</a>
+            <a class="nav-item my-2" href="MainController?btnAction=Logout"><button class="btn btn-primary">Logout</button></a>
+        </nav>
         <div class="container">
-            <c:if test="${empty sessionScope.User}">
-                <c:redirect url="login.jsp"></c:redirect>
-            </c:if>
+
             <div class="col mt-5 justify-center">
                 <form action="MainController" class ="need-validate" method="post" enctype="multipart/form-data" novalidate>
                     <div class="form-row">
@@ -42,9 +52,15 @@
                         <textarea class="form-control" id=description" row="3" name="txtDescription" required></textarea>
                         <div class="invalid-feedback">Please provide a description</div>
                         <label for="file">Image</label>
-                        <input type="file" class="form-control" id="file" name="txtImage" accept="image/png,image/jpeg" onchange="validateImage()" required>
-                        <div class="invalid-feedback">Please provide a image</div>
-                        <input type="submit" value="Create" name="btnAction" />
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="file" name="txtImage" accept="image/png,image/jpeg" onchange="validateImage()" required>
+                            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                            <div class="invalid-feedback">Please provide a image</div>
+                        </div>
+                        <c:if test="${not empty requestScope.CreateArticleError}">
+                            <p style="color: red">${requestScope.CreateArticleError}</p>
+                        </c:if>
+                        <input class="btn btn-primary mt-4 btn-block" type="submit" value="Create" name="btnAction" />
                     </div>
                 </form>
             </div>
@@ -52,22 +68,22 @@
     </body>
     <script>
         function validateImage() {
-            var fileInput =  
-                document.getElementById("file"); 
-              
-            var filePath = fileInput.value; 
-          
+            var fileInput =
+                    document.getElementById("file");
+
+            var filePath = fileInput.value;
+
             // Allowing file type 
-            var allowedExtensions =  
-                    /(\.jpg|\.jpeg|\.png|\.gif)$/i; 
-              
-            if (!allowedExtensions.exec(filePath)) { 
-                alert('Invalid file type'); 
-                fileInput.value = ''; 
-                return false; 
-            }  
+            var allowedExtensions =
+                    /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+
+            if (!allowedExtensions.exec(filePath)) {
+                alert('Invalid file type');
+                fileInput.value = '';
+                return false;
+            }
             return true;
-        } 
+        }
         (function () {
             'use strict';
             window.addEventListener('load', function () {
@@ -76,7 +92,7 @@
                 // Loop over them and prevent submission
                 var validation = Array.prototype.filter.call(forms, function (form) {
                     form.addEventListener('submit', function (event) {
-                        if (form.checkValidity() === false || validateImage()===false) {
+                        if (form.checkValidity() === false || validateImage() === false) {
                             event.preventDefault();
                             event.stopPropagation();
                         }

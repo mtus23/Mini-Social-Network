@@ -97,4 +97,22 @@ public class UserDAO implements Serializable {
         return check;
     }
 
+    public UserDTO getUser(String mail) throws SQLException, ClassNotFoundException, NamingException {
+        UserDTO result = null;
+        try {
+            String sql = "SELECT name FROM tblUser WHERE mail = ?";
+            con = DBUtil.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setString(1, mail);
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                String name = rs.getString("name");
+                result = new UserDTO(mail, name);
+            }
+        } finally {
+            closeConnection();
+        }
+        return result;
+    }
+
 }

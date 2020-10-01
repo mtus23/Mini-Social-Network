@@ -14,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import jlp0010.dao.UserDAO;
 import jlp0010.dto.RegisterErrorDTO;
 import jlp0010.dto.UserDTO;
@@ -35,7 +34,7 @@ public class RegisterController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private final static Logger log = Logger.getLogger(RegisterController.class);
+    private final static Logger LOG = Logger.getLogger(RegisterController.class);
     private final String ERROR = "register.jsp";
     private final String LOGIN_PAGE = "login.jsp";
 
@@ -56,11 +55,10 @@ public class RegisterController extends HttpServlet {
                 if (mail.length() < 1) {
                     errorDto.setErrorMail("Mail cannot be blank");
                     error = true;
-                } else if(!mail.matches("^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
+                } else if (!mail.matches("^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")) {
                     errorDto.setErrorMail("invalid email");
                     error = true;
-                }
-                else if (dao.checkDuplicated(mail)) {
+                } else if (dao.checkDuplicated(mail)) {
                     errorDto.setErrorMail("Mail is existed");
                     error = true;
                 }
@@ -80,15 +78,14 @@ public class RegisterController extends HttpServlet {
                     error = true;
                 }
                 if (error) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("registerError", errorDto);
+                    request.setAttribute("registerError", errorDto);
                 } else {
                     UserDTO dto = new UserDTO(mail, name, pass);
                     dao.register(dto);
                     url = LOGIN_PAGE;
                 }
             } catch (SQLException | ClassNotFoundException | NamingException e) {
-                log.error(e.getMessage());
+                LOG.error(e.getMessage());
             } finally {
                 RequestDispatcher rd = request.getRequestDispatcher(url);
                 rd.forward(request, response);

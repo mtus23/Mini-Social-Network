@@ -11,7 +11,8 @@ import java.io.Serializable;
  *
  * @author DELL
  */
-public class UserDTO implements Serializable{
+public class UserDTO implements Serializable {
+
     private String mail;
     private String name;
     private String password;
@@ -42,9 +43,10 @@ public class UserDTO implements Serializable{
         this.statusId = statusId;
     }
 
-    
-    
-    
+    public UserDTO(String mail, String name) {
+        this.mail = mail;
+        this.name = name;
+    }
 
     public String getMail() {
         return mail;
@@ -85,6 +87,5 @@ public class UserDTO implements Serializable{
     public void setStatusId(int statusId) {
         this.statusId = statusId;
     }
-    
-    
+
 }

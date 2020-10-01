@@ -43,6 +43,13 @@ public class MainController extends HttpServlet {
     private final String REGISTER = "RegisterController";
     private final String LOGOUT = "LogoutController";
     private final String CREATE_ARTICLE = "CreateArticleController";
+    private final String ARTICLE_DETAIL = "ShowArticleDetailController";
+    private final String MAKE_EMOTION = "MakeEmotionController";
+    private final String MAKE_COMMENT = "MakeCommentController";
+    private final String DELETE_ARTICLE = "DeleteArticleController";
+    private final String SHOW_NOTI = "ShowNotiController";
+    private final String SHOW_NOTI_CORRESPONDING = "ShowNotiCorrespondingController";
+    private final String DELETE_COMMENT = "DeleteCommentController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -50,11 +57,10 @@ public class MainController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String url = ERROR_PAGE;
-            LOG.info("access main controller");
             try {
                 boolean isMultiPart = ServletFileUpload.isMultipartContent(request);
                 if (isMultiPart) {
-                    url=CREATE_ARTICLE;
+                    url = CREATE_ARTICLE;
                 } else {
                     String action = request.getParameter("btnAction");
                     if (action.equals("Login")) {
@@ -67,6 +73,20 @@ public class MainController extends HttpServlet {
                         url = SEARCH;
                     } else if (action.equals("Create")) {
                         url = CREATE_ARTICLE;
+                    } else if (action.equals("ArticleDetail")) {
+                        url = ARTICLE_DETAIL;
+                    } else if (action.equals("MakeEmotion")) {
+                        url = MAKE_EMOTION;
+                    } else if (action.equals("Submit Comment")) {
+                        url = MAKE_COMMENT;
+                    } else if (action.equals("DeleteArticle")) {
+                        url = DELETE_ARTICLE;
+                    } else if (action.equals("showNoti")) {
+                        url = SHOW_NOTI;
+                    } else if (action.equals("showNotiCorresponding")) {
+                        url = SHOW_NOTI_CORRESPONDING;
+                    } else if (action.equals("DeleteComment")) {
+                        url = DELETE_COMMENT;
                     }
                 }
             } catch (Exception e) {

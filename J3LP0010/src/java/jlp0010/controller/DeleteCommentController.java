@@ -8,27 +8,22 @@ package jlp0010.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import jlp0010.dao.ArticleDAO;
-import jlp0010.dto.ArticleDTO;
+import jlp0010.dao.CommentDAO;
 import org.apache.log4j.Logger;
 
 /**
  *
  * @author DELL
  */
-public class SearchController extends HttpServlet {
+public class DeleteCommentController extends HttpServlet {
 
-    private final static Logger LOG = Logger.getLogger(SearchController.class);
-    private final String ERROR = "error.jsp";
-    private final String SEARCH_RESULT = "search.jsp";
-    private final int ROWS_PER_PAGE = 20;
+    private static final Logger LOG = Logger.getLogger(DeleteCommentController.class);
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,43 +34,26 @@ public class SearchController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    private final String ERROR = "error.jsp";
+    private final String SUCCESS = "ShowArticleDetailController";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String url = ERROR;
-            String search = request.getParameter("txtSearch");
-            String page = request.getParameter("txtCurrentPage");
-            int currentPage = 1;
-            if (page != null) {
-                currentPage = Integer.parseInt(page);
-            }
-            ArticleDAO dao = new ArticleDAO();
-            List<ArticleDTO> searchResult = null;
+            CommentDAO dao = new CommentDAO();
             try {
-                int numOfArticle = dao.countArticle(search);
-                int numOfPage = (int) (Math.ceil((numOfArticle * 1.0) / ROWS_PER_PAGE));
-                request.setAttribute("searchValue", search);
-                if (currentPage > numOfPage || currentPage <= 0) {
-                    currentPage = 1;
-                }
-                searchResult = dao.searchArcticle(search, currentPage, ROWS_PER_PAGE);
-                if (searchResult == null) {
-                    request.setAttribute("errorSearch", "Content not found");
-                } else {
-                    request.setAttribute("numberOfPage", numOfPage);
-                    request.setAttribute("currentPage", currentPage);
-                    request.setAttribute("searchResult", searchResult);
-                }
-                url = SEARCH_RESULT;
-            } catch (SQLException | ClassNotFoundException | NamingException e) {
-                LOG.error(e.getMessage());
+                int cmtId = Integer.parseInt(request.getParameter("txtCmtId"));
+                dao.deleteComment(cmtId);
+                url = SUCCESS;
+            } catch (ClassNotFoundException | SQLException | NamingException e) {
+                LOG.error(e.toString());
             } finally {
                 RequestDispatcher rd = request.getRequestDispatcher(url);
                 rd.forward(request, response);
             }
-
         }
     }
 

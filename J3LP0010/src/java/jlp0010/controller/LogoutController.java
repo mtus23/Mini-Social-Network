@@ -23,6 +23,7 @@ public class LogoutController extends HttpServlet {
     private final static Logger LOG = Logger.getLogger(LogoutController.class);
     private final String ERROR = "error.jsp";
     private final String LOGIN = "login.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,19 +38,16 @@ public class LogoutController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            LOG.info("logout");
             String url = ERROR;
-            try{
+            try {
                 HttpSession session = request.getSession(false);
-                if(session != null){
+                if (session != null) {
                     session.invalidate();
                 }
-                url=LOGIN;
-            }
-            catch(Exception e){
+                url = LOGIN;
+            } catch (Exception e) {
                 LOG.error(e.getMessage());
-            }
-            finally{
+            } finally {
                 response.sendRedirect(url);
             }
         }

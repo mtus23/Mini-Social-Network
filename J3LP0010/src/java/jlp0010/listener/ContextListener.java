@@ -17,20 +17,19 @@ import org.apache.log4j.PropertyConfigurator;
  * @author DELL
  */
 @WebListener("application context listener")
-public class ContextListener implements ServletContextListener{
+public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent event) {
-    // initialize log4j here
         ServletContext context = event.getServletContext();
         String log4jConfigFile = context.getInitParameter("log4j-config-location");
-        String fullPath = context.getRealPath("") + File.separator + log4jConfigFile; 
+        String fullPath = context.getRealPath("") + File.separator + log4jConfigFile;
         PropertyConfigurator.configure(fullPath);
-    
+
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
     }
-    
+
 }

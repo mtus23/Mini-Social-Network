@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -42,7 +42,7 @@ public class CreateArticleController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     private final String SEARCH = "search.jsp";
-    private final String ERROR = "error.jsp";
+    private final String ERROR = "createArticle.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -52,37 +52,42 @@ public class CreateArticleController extends HttpServlet {
             String url = ERROR;
             try {
                 boolean isMultiPart = ServletFileUpload.isMultipartContent(request);
-                if(isMultiPart){
-                ArticleDAO dao = new ArticleDAO();
-                String imageName = null;
-                FileItemFactory factory = new DiskFileItemFactory();
-                ServletFileUpload upload = new ServletFileUpload(factory);
-                Hashtable params = new Hashtable();
-                List items = upload.parseRequest(request);
-                Iterator iter = items.iterator();
-                while (iter.hasNext()) {
-                    FileItem item = (FileItem) iter.next();
-                    if (item.isFormField()) {
-                        params.put(item.getFieldName(), item.getString());
-                    } else {
-                        String itemName = item.getName();
-                        imageName = itemName.substring(
-                                itemName.lastIndexOf("\\") + 1);
-                        String RealPath = getServletContext().getRealPath("/")
-                                + "images\\" + imageName;
-                        File savedFile = new File(RealPath);
-                        item.write(savedFile);
+                if (isMultiPart) {
+                    ArticleDAO dao = new ArticleDAO();
+                    String imageName = null;
+                    FileItemFactory factory = new DiskFileItemFactory();
+                    ServletFileUpload upload = new ServletFileUpload(factory);
+                    HashMap params = new HashMap();
+                    List items = upload.parseRequest(request);
+                    Iterator iter = items.iterator();
+                    while (iter.hasNext()) {
+                        FileItem item = (FileItem) iter.next();
+                        if (item.isFormField()) {
+                            params.put(item.getFieldName(), item.getString());
+                        } else {
+                            String itemName = item.getName();
+                            imageName = itemName.substring(
+                                    itemName.lastIndexOf("\\") + 1);
+                            if (dao.checkImage(imageName)) {
+                                request.setAttribute("CreateArticleError", "Image Duplicated");
+                                url = ERROR;
+                                break;
+                            }
+                            String RealPath = getServletContext().getRealPath("/")
+                                    + "images\\" + imageName;
+                            File savedFile = new File(RealPath);
+                            item.write(savedFile);
+                        }
                     }
-                }
-                String tilte = (String) params.get("txtTitle");
-                String description = (String) params.get("txtDescription");
-                String mail = (String) params.get("txtMail");
-                description.replaceAll("\\n", "<br>");
-                Date currentDate = new Date(System.currentTimeMillis());
-                ArticleDTO dto = new ArticleDTO(imageName, tilte, description, mail, currentDate);
-                boolean check = dao.createArticle(dto);
-                if(!check) LOG.info("create fail");
-                url = SEARCH;
+                    if (!dao.checkImage(imageName)) {
+                        String tilte = (String) params.get("txtTitle");
+                        String description = (String) params.get("txtDescription");
+                        String mail = (String) params.get("txtMail");
+                        Date currentDate = new Date(System.currentTimeMillis());
+                        ArticleDTO dto = new ArticleDTO(imageName, tilte, description, mail, currentDate);
+                        dao.createArticle(dto);
+                        url = SEARCH;
+                    }
                 }
             } catch (Exception ex) {
                 LOG.error(ex.toString());

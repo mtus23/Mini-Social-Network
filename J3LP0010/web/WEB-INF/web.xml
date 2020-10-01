@@ -32,6 +32,30 @@
         <servlet-name>ShowArticleDetailController</servlet-name>
         <servlet-class>jlp0010.controller.ShowArticleDetailController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MakeEmotionController</servlet-name>
+        <servlet-class>jlp0010.controller.MakeEmotionController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MakeCommentController</servlet-name>
+        <servlet-class>jlp0010.controller.MakeCommentController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteArticleController</servlet-name>
+        <servlet-class>jlp0010.controller.DeleteArticleController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteCommentController</servlet-name>
+        <servlet-class>jlp0010.controller.DeleteCommentController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowNotiController</servlet-name>
+        <servlet-class>jlp0010.controller.ShowNotiController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowNotiCorrespondingController</servlet-name>
+        <servlet-class>jlp0010.controller.ShowNotiCorrespondingController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -59,6 +83,30 @@
     <servlet-mapping>
         <servlet-name>ShowArticleDetailController</servlet-name>
         <url-pattern>/ShowArticleDetailController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MakeEmotionController</servlet-name>
+        <url-pattern>/MakeEmotionController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MakeCommentController</servlet-name>
+        <url-pattern>/MakeCommentController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteArticleController</servlet-name>
+        <url-pattern>/DeleteArticleController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCommentController</servlet-name>
+        <url-pattern>/DeleteCommentController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowNotiController</servlet-name>
+        <url-pattern>/ShowNotiController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowNotiCorrespondingController</servlet-name>
+        <url-pattern>/ShowNotiCorrespondingController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

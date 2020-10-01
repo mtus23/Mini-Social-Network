@@ -17,7 +17,7 @@ import javax.sql.DataSource;
  *
  * @author DELL
  */
-public class DBUtil implements Serializable{
+public class DBUtil implements Serializable {
 
     public static Connection getConnection() throws SQLException, ClassNotFoundException, NamingException {
         Connection conn = null;
@@ -28,4 +28,3 @@ public class DBUtil implements Serializable{
         return conn;
     }
 }
-

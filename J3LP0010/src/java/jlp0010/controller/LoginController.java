@@ -35,7 +35,7 @@ public class LoginController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private final static Logger log = Logger.getLogger(LoginController.class);
+    private final static Logger lOG = Logger.getLogger(LoginController.class);
     private final String ERROR = "login.jsp";
     private final String SEARCH_PAGE = "search.jsp";
 
@@ -54,13 +54,12 @@ public class LoginController extends HttpServlet {
                 if (dto != null) {
                     session.setAttribute("User", dto);
                     url = SEARCH_PAGE;
-                }
-                else{
+                } else {
                     String msg = "Wrong mail or password";
-                    session.setAttribute("loginError", msg);
+                    request.setAttribute("loginError", msg);
                 }
             } catch (SQLException | ClassNotFoundException | NamingException e) {
-                log.error(e.getMessage());
+                lOG.error(e.getMessage());
             } finally {
                 RequestDispatcher rd = request.getRequestDispatcher(url);
                 rd.forward(request, response);

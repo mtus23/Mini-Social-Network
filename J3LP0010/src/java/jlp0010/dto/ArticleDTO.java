@@ -21,22 +21,8 @@ public class ArticleDTO implements Serializable {
     private String mail;
     private int status;
     private Date date;
-    private int likes;
-    private int dislikes;
 
     public ArticleDTO() {
-    }
-
-    public ArticleDTO(int postId, String image, String title, String description, String mail, int status, Date date, int likes, int dislikes) {
-        this.postId = postId;
-        this.image = image;
-        this.title = title;
-        this.description = description;
-        this.mail = mail;
-        this.status = status;
-        this.date = date;
-        this.likes = likes;
-        this.dislikes = dislikes;
     }
 
     public ArticleDTO(int postId, String image, String title, String description, String mail, int status, Date date) {
@@ -46,6 +32,15 @@ public class ArticleDTO implements Serializable {
         this.description = description;
         this.mail = mail;
         this.status = status;
+        this.date = date;
+    }
+
+    public ArticleDTO(int postId, String image, String title, String description, String mail, Date date) {
+        this.postId = postId;
+        this.image = image;
+        this.title = title;
+        this.description = description;
+        this.mail = mail;
         this.date = date;
     }
 
@@ -64,10 +59,13 @@ public class ArticleDTO implements Serializable {
         this.date = date;
     }
 
-    
-
-    
-    
+    public ArticleDTO(int postId, String image, String title, String description, String mail) {
+        this.postId = postId;
+        this.image = image;
+        this.title = title;
+        this.description = description;
+        this.mail = mail;
+    }
 
     public int getPostId() {
         return postId;
@@ -125,23 +123,4 @@ public class ArticleDTO implements Serializable {
         this.date = date;
     }
 
-    public int getLikes() {
-        return likes;
-    }
-
-    public void setLikes(int likes) {
-        this.likes = likes;
-    }
-
-    public int getDislikes() {
-        return dislikes;
-    }
-
-    public void setDislikes(int dislikes) {
-        this.dislikes = dislikes;
-    }
-
-    
-    
 }
-

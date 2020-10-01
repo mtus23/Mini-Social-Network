@@ -7,8 +7,8 @@ package jlp0010.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.sql.SQLException;
-import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,19 +16,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import jlp0010.dao.ArticleDAO;
+import jlp0010.dao.EmotionDAO;
+import jlp0010.dao.NotiDAO;
 import jlp0010.dto.ArticleDTO;
+import jlp0010.dto.EmotionDTO;
+import jlp0010.dto.NotiDTO;
 import org.apache.log4j.Logger;
 
 /**
  *
  * @author DELL
  */
-public class SearchController extends HttpServlet {
+public class MakeEmotionController extends HttpServlet {
 
-    private final static Logger LOG = Logger.getLogger(SearchController.class);
+    private static final Logger LOG = Logger.getLogger(MakeEmotionController.class);
+    private final String SUCCESS = "ShowArticleDetailController";
     private final String ERROR = "error.jsp";
-    private final String SEARCH_RESULT = "search.jsp";
-    private final int ROWS_PER_PAGE = 20;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,43 +46,65 @@ public class SearchController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             String url = ERROR;
-            String search = request.getParameter("txtSearch");
-            String page = request.getParameter("txtCurrentPage");
-            int currentPage = 1;
-            if (page != null) {
-                currentPage = Integer.parseInt(page);
+            String mail = request.getParameter("txtMail");
+            int postId = Integer.parseInt(request.getParameter("txtId"));
+            String emo = request.getParameter("txtEmo");
+            EmotionDAO dao = new EmotionDAO();
+            NotiDAO notiDao = new NotiDAO();
+            ArticleDAO artDao = new ArticleDAO();
+            NotiDTO notiDto = null;
+            boolean isLike = false;
+            boolean isDislike = false;
+            if (emo.equals("Like")) {
+                isLike = true;
+                isDislike = false;
+            } else if (emo.equals("Dislike")) {
+                isDislike = true;
+                isLike = false;
             }
-            ArticleDAO dao = new ArticleDAO();
-            List<ArticleDTO> searchResult = null;
             try {
-                int numOfArticle = dao.countArticle(search);
-                int numOfPage = (int) (Math.ceil((numOfArticle * 1.0) / ROWS_PER_PAGE));
-                request.setAttribute("searchValue", search);
-                if (currentPage > numOfPage || currentPage <= 0) {
-                    currentPage = 1;
-                }
-                searchResult = dao.searchArcticle(search, currentPage, ROWS_PER_PAGE);
-                if (searchResult == null) {
-                    request.setAttribute("errorSearch", "Content not found");
+                Date currentDate = new Date(System.currentTimeMillis());
+                EmotionDTO dto = dao.findEmo(postId, mail);
+                if (dto != null) {
+                    if (dto.isLikes() && isLike) {
+                        notiDto = notiDao.findNoti(postId, mail, "likes");
+                        isLike = false;
+                    } else if (dto.isDislikes() && isDislike) {
+                        notiDto = notiDao.findNoti(postId, mail, "dislikes");
+                        isDislike = false;
+                    }
+                    if (notiDto != null) {
+                        notiDao.deleteNoti(notiDto);
+                    }
+                    dto = new EmotionDTO(postId, mail, isLike, isDislike, currentDate);
+                    dao.editEmotion(dto);
                 } else {
-                    request.setAttribute("numberOfPage", numOfPage);
-                    request.setAttribute("currentPage", currentPage);
-                    request.setAttribute("searchResult", searchResult);
+                    dto = new EmotionDTO(postId, mail, isLike, isDislike, currentDate);
+                    dao.createEmotion(dto);
                 }
-                url = SEARCH_RESULT;
+                ArticleDTO postOwner = artDao.getArticleById(postId);
+                if (!postOwner.getMail().equals(mail)) {
+                    if (isLike) {
+                        notiDto = new NotiDTO(postId, mail, currentDate, "likes");
+                    } else if (isDislike) {
+                        notiDto = new NotiDTO(postId, mail, currentDate, "dislikes");
+                    }
+                    notiDao.addNoti(notiDto);
+                }
+                url = SUCCESS;
+
             } catch (SQLException | ClassNotFoundException | NamingException e) {
-                LOG.error(e.getMessage());
+                LOG.error(e.toString());
+
             } finally {
                 RequestDispatcher rd = request.getRequestDispatcher(url);
                 rd.forward(request, response);
             }
-
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
