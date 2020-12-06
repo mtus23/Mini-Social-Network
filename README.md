@@ -31,3 +31,4 @@ schema and sample data in [script](https://github.com/mtus23/Mini-Social-Network
 ## Connect me via
 * [Github](https://github.com/mtus23)
 * [Facebook](https://www.facebook.com/minhtu.nguyenhoang.1)
+### © 2020 by Tu Nguyen | FPT University HCMC
