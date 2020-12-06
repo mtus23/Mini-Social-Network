@@ -45,6 +45,7 @@ public class ShowArticleDetailController extends HttpServlet {
      */
     private final String DETAIL = "articleDetail.jsp";
     private final String ERROR = "error.jsp";
+    private final String NOT_FOUND = "search.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -60,28 +61,33 @@ public class ShowArticleDetailController extends HttpServlet {
                 UserDAO userDao = new UserDAO();
                 int articleId = Integer.parseInt(request.getParameter("txtId"));
                 ArticleDTO dto = dao.getArticleById(articleId);
-                HashMap<String, String> cmtOwner = new HashMap<>();
-                if (session.getAttribute("ListComment") != null) {
-                    session.removeAttribute("ListComment");
-                }
-                UserDTO user = (UserDTO) session.getAttribute("User");
-                HashMap<String, Integer> count = emoDao.countEmotion(dto.getPostId());
-                UserDTO articleOwner = userDao.getUser(dto.getMail());
-                List<CommentDTO> listCmt = cmtDao.getCommentInPost(articleId);
-                if (listCmt != null) {
-                    for (CommentDTO cmt : listCmt) {
-                        cmtOwner.put(cmt.getMail(), userDao.getUser(cmt.getMail()).getName());
+                if (dto != null) {
+                    HashMap<String, String> cmtOwner = new HashMap<>();
+                    if (session.getAttribute("ListComment") != null) {
+                        session.removeAttribute("ListComment");
                     }
-                    session.setAttribute("ListComment", listCmt);
-                    session.setAttribute("CommentOwner", cmtOwner);
+                    UserDTO user = (UserDTO) session.getAttribute("User");
+                    HashMap<String, Integer> count = emoDao.countEmotion(dto.getPostId());
+                    UserDTO articleOwner = userDao.getUser(dto.getMail());
+                    List<CommentDTO> listCmt = cmtDao.getCommentInPost(articleId);
+                    if (listCmt != null) {
+                        for (CommentDTO cmt : listCmt) {
+                            cmtOwner.put(cmt.getMail(), userDao.getUser(cmt.getMail()).getName());
+                        }
+                        session.setAttribute("ListComment", listCmt);
+                        session.setAttribute("CommentOwner", cmtOwner);
 
+                    }
+                    EmotionDTO emo = emoDao.findEmo(articleId, user.getMail());
+                    session.setAttribute("UserEmotion", emo);
+                    session.setAttribute("ArticleDetail", dto);
+                    session.setAttribute("EmotionCount", count);
+                    session.setAttribute("ArticleOwner", articleOwner);
+                    url = DETAIL;
+                } else {
+                    url = NOT_FOUND;
+                    request.setAttribute("errorSearch", "Content not found");
                 }
-                EmotionDTO emo = emoDao.findEmo(articleId, user.getMail());
-                session.setAttribute("UserEmotion", emo);
-                session.setAttribute("ArticleDetail", dto);
-                session.setAttribute("EmotionCount", count);
-                session.setAttribute("ArticleOwner", articleOwner);
-                url = DETAIL;
             } catch (SQLException | ClassNotFoundException | NamingException e) {
                 LOG.error(e.toString());
             } finally {

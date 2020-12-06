@@ -44,7 +44,7 @@ public class UserDAO implements Serializable {
     public UserDTO checkLogin(String mail, String password) throws SQLException, ClassNotFoundException, NamingException {
         UserDTO dto = null;
         try {
-            String sql = "SELECT name, role, status FROM tblUser WHERE mail = ? AND password = ?";
+            String sql = "SELECT name, role, status FROM tblUser WHERE mail = ? AND password = ? AND (status = 1 OR status = 2)";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);
             stm.setString(1, mail);

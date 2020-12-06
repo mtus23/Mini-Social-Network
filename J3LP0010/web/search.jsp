@@ -110,12 +110,13 @@
                         </c:if>
                     </div>
                 </c:if>
-                <c:if test="${not empty requestScope.errorSearch}">
-                    <div class="col mt-5 justify-center">
-                        <p>${requestScope.errorSearch}</p> 
+               
+            </div> 
+                 <c:if test="${not empty requestScope.errorSearch}">
+                    <div class="alert alert-danger justify-center">
+                        ${requestScope.errorSearch}
                     </div>
                 </c:if>
-            </div> 
         </div>
     </body>
 </html>

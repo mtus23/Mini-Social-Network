@@ -101,7 +101,7 @@ public class ArticleDAO implements Serializable {
         try {
             String sql = "SELECT title, image, mail, date, description "
                     + "FROM tblArticle "
-                    + "WHERE postId = ?";
+                    + "WHERE postId = ? AND status = 2";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);
             stm.setInt(1, id);

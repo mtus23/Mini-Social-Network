@@ -3,41 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/controller/DeleteArticleController.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/web/login.jsp</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/controller/ShowNotiController.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/web/error.jsp</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/dto/RegisterErrorDTO.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/dao/NotiDAO.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/web/showNotiList.jsp</file>
-            <file>file:/D:/lab%20web/J3LP0010/web/search.jsp</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/dao/EmotionDAO.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/controller/CreateArticleController.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/util/DBUtil.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/dto/ArticleDTO.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/dto/NotiDTO.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/controller/LogoutController.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/controller/MakeEmotionController.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/controller/MainController.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/dto/EmotionDTO.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/web/WEB-INF/web.xml</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/dao/ArticleDAO.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/listener/ContextListener.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/controller/ShowNotiCorrespondingController.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/controller/ShowArticleDetailController.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/dao/UserDAO.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/dto/UserDTO.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/controller/LoginController.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/web/register.jsp</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/controller/RegisterController.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/dao/CommentDAO.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/web/articleDetail.jsp</file>
-            <file>file:/D:/lab%20web/J3LP0010/web/createArticle.jsp</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/controller/DeleteCommentController.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/controller/MakeCommentController.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/dto/CommentDTO.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/util/PasswordEncrypter.java</file>
-            <file>file:/D:/lab%20web/J3LP0010/src/java/jlp0010/controller/SearchController.java</file>
+            <file>file:/D:/lab%20web/miniSocialNetwork/J3LP0010/Mini%20Social%20Network/J3LP0010/web/login.jsp</file>
         </group>
     </open-files>
 </project-private>
