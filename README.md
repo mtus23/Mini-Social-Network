@@ -9,6 +9,7 @@ This is mini social networking have some basic feature:
 * Make emotions react
 * View notification
 * Delete a post or a comment
+This project use Servlet as Controller and follow MVC2 model.
 
 ## System dependencies
 * Microsoft SQL Server 2018
