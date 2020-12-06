@@ -25,8 +25,8 @@ This is mini social networking have some basic feature:
 You can find via [Jars](https://github.com/mtus23/Mini-Social-Network/tree/main/J3LP0010/jars)
 
 ## Database
-schema and sample data in (script)[https://github.com/mtus23/Mini-Social-Network/tree/main/J3LP0010/script.sql]
+schema and sample data in [script](https://github.com/mtus23/Mini-Social-Network/tree/main/J3LP0010/script.sql)
 
 ## Connect me via
-[Github](https://github.com/mtus23)
-[Facebook](https://www.facebook.com/minhtu.nguyenhoang.1)
+* [Github](https://github.com/mtus23)
+* [Facebook](https://www.facebook.com/minhtu.nguyenhoang.1)
