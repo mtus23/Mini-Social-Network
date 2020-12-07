@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.naming.NamingException;
 import jlp0010.dto.ArticleDTO;
-import jlp0010.dto.UserDTO;
 import jlp0010.util.DBUtil;
 
 /**

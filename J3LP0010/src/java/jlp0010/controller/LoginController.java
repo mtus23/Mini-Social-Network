@@ -18,7 +18,6 @@ import javax.servlet.http.HttpSession;
 import jlp0010.dao.UserDAO;
 import jlp0010.dto.UserDTO;
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 
 /**
  *
@@ -35,7 +34,7 @@ public class LoginController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private final static Logger lOG = Logger.getLogger(LoginController.class);
+    private final static Logger LOG = Logger.getLogger(LoginController.class);
     private final String ERROR = "login.jsp";
     private final String SEARCH_PAGE = "search.jsp";
 
@@ -59,7 +58,7 @@ public class LoginController extends HttpServlet {
                     request.setAttribute("loginError", msg);
                 }
             } catch (SQLException | ClassNotFoundException | NamingException e) {
-                lOG.error(e.getMessage());
+                LOG.error(e.getMessage());
             } finally {
                 RequestDispatcher rd = request.getRequestDispatcher(url);
                 rd.forward(request, response);

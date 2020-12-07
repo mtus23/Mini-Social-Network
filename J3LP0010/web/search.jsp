@@ -75,7 +75,7 @@
                             </div>
                         </div>
                     </form>
-                    <a href="createArticle.jsp?txtMail=${user.mail}"><button class="btn btn-primary btn-block mt-3">Post an Article</button></a>
+                    <a href="createArticle.jsp"><button class="btn btn-primary btn-block mt-3">Post an Article</button></a>
                 </div>
                 <c:if test="${not empty requestScope.searchResult}">
                     <c:set var="currentPage" value="${requestScope.currentPage}"></c:set>
