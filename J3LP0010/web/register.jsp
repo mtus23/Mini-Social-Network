@@ -1,6 +1,6 @@
 <%-- 
-    Document   : register
-    Created on : Sep 18, 2020, 2:21:04 AM
+    Document   : register.jsp
+    Created on : Dec 7, 2020, 8:48:10 AM
     Author     : DELL
 --%>
 
@@ -73,7 +73,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                                         </div>
-                                        <input class="form-control" placeholder="Password" type="password" name="txtConfirmPass" value="">
+                                        <input class="form-control" placeholder="Confirm password" type="password" name="txtConfirmPass" value="">
 
                                     </div>
                                 </div>

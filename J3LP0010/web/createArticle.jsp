@@ -1,6 +1,6 @@
 <%-- 
     Document   : createArticle
-    Created on : Sep 22, 2020, 4:29:06 PM
+    Created on : Dec 7, 2020, 8:49:04 AM
     Author     : DELL
 --%>
 
@@ -31,13 +31,28 @@
         </style>
     </head>
     <body>
-        <c:if test="${empty sessionScope.User}">
+        <c:if test ="${empty sessionScope.User}">
             <c:redirect url="login.jsp"></c:redirect>
         </c:if>
-        <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-            <a class="nav-item" href="search.jsp">Search Page</a>
-            <a class="nav-item noti" href="MainController?btnAction=showNoti">My Notification</a>
-            <a class="nav-item my-2" href="MainController?btnAction=Logout"><button class="btn btn-primary">Logout</button></a>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="search.jsp">My social network</a>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="search.jsp">Search Page </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="MainController?btnAction=showNoti">My Notification</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="MainController?btnAction=createArticle">Create Article<span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+                <a class="nav-item my-2" href="MainController?btnAction=Logout"><button class="btn btn-primary">Logout</button></a>
+            </div>
         </nav>
         <div class="container">
 
@@ -54,7 +69,7 @@
                         <label for="file">Image</label>
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="file" name="txtImage" accept="image/png,image/jpeg" onchange="validateImage()" required>
-                            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                            <label class="custom-file-label" for="inputGroupFile01" id="fileLabel">Choose file</label>
                             <div class="invalid-feedback">Please provide a image</div>
                         </div>
                         <c:if test="${not empty requestScope.CreateArticleError}">
@@ -80,7 +95,10 @@
             if (!allowedExtensions.exec(filePath)) {
                 alert('Invalid file type');
                 fileInput.value = '';
-                return false;
+            }
+            else{
+                filePath.split(/(\\|\/)/g).pop();
+                document.getElementById("fileLabel").innerHTML = filePath;
             }
             return true;
         }

@@ -1,6 +1,6 @@
 <%-- 
-    Document   : showNotiList
-    Created on : Dec 7, 2020, 8:50:05 AM
+    Document   : activeAccount.jsp
+    Created on : Dec 8, 2020, 9:18:12 AM
     Author     : DELL
 --%>
 
@@ -10,34 +10,24 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Notification Page</title>
+        <title>Active Page</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- CSS only -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <!-- JS, Popper.js, and jQuery -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-        <style>
-            .date{
-                font-size: 85%;
-            }
-            a:hover{
-                text-decoration: none;
-                background-color: whitesmoke;
-            }
-            .noti{
-                margin-right: auto !important;
-                margin-left: 10px;
-            }
-            h5{
-                margin-top: 250px;
-                margin-left: 250px;
-            }
-        </style>
+
     </head>
     <body>
         <c:if test ="${empty sessionScope.User}">
             <c:redirect url="login.jsp"></c:redirect>
+        </c:if>
+        <c:if test="${sessionScope.User.statusId == 2}">
+            <c:redirect url="search.jsp"></c:redirect>
         </c:if>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,7 +40,7 @@
                         <a class="nav-link" href="search.jsp">Search Page </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="MainController?btnAction=showNoti">My Notification<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="MainController?btnAction=showNoti">My Notification</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="MainController?btnAction=createArticle">Create Article</a>
@@ -59,34 +49,36 @@
                 <a class="nav-item my-2" href="MainController?btnAction=Logout"><button class="btn btn-primary">Logout</button></a>
             </div>
         </nav>
-        <div class="container justify-center">
-            <div class="col-8 justify-content-center">
-                <c:if test="${not empty requestScope.listNotiEmpty}">
-                    <h5>
-                        ${requestScope.listNotiEmpty}
-                    </h5>
-                </c:if>
-                <c:if test="${not empty requestScope.listNoti}">
-                    <c:forEach var="notiDto" items="${requestScope.listNoti}"> 
-                        <div class="m-2 p-1 border rounded">
-                            <a href="MainController?btnAction=showNotiCorresponding&txtNotiId=${notiDto.notiId}&txtId=${notiDto.postId}">
-                                <c:if test="${notiDto.status eq 5}">
-                                    <strong>
-                                        ${requestScope.mapNames[notiDto.mail]} - (${notiDto.mail}) has ${notiDto.type} on your post<br>
-                                        <p class="date">${notiDto.date}</p>
-                                        <c:if test="${notiDto.type eq 'comments'}">
-                                            "${requestScope.mapCmtContent[notiDto.notiId]}"
-                                        </c:if>
-                                    </strong>
-                                </c:if>
-                                <c:if test="${notiDto.status ne 5}">
-                                    ${requestScope.mapNames[notiDto.mail]} - (${notiDto.mail})has ${notiDto.type} on your post<br>
-                                    <p class="date">${notiDto.date}</p>
-                                </c:if>
-                            </a>
-                        </div>
-                    </c:forEach>
-                </c:if>
+        <div class="container">
+            <c:if test="${sessionScope.User.statusId == 1}">
+                <div class="alert alert-danger" role="alert">
+                    You have not received activation email yet! Click <a href="MainController?btnAction=resendActivation" class="alert-link">here</a> to resend activation email.
+                </div>
+            </c:if>
+            <c:if test="${not empty requestScope.sendCodeSuccess}">
+                <div class="alert alert-success" role="alert">
+                    ${requestScope.sendCodeSuccess}
+                </div>
+            </c:if>
+            <c:if test="${not empty requestScope.activeFail}">
+                <div class="alert alert-danger" role="alert">
+                    ${requestScope.activeFail}
+                </div>
+            </c:if>
+            <div class="d-flex justify-content-center">
+                <form action="MainController" method="POST">
+                    <h4>Activate account</h4>
+                    <div class="form-group row">
+                        <label>Active key: </label>
+                        <input name="txtActivationCode" type="text" min="1" max="4" class="form-control"
+                               <c:if test="${not empty param.txtActivationCode}">
+                                   value="${param.txtActivationCode}"
+                               </c:if>
+                               required />
+                    </div>
+                    <input type="submit" class="btn btn-primary" name="btnAction" value="activation">
+                </form>
+
             </div>
         </div>
     </body>

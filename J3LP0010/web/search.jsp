@@ -1,6 +1,6 @@
 <%-- 
-    Document   : search
-    Created on : Sep 18, 2020, 2:11:47 AM
+    Document   : search.jsp
+    Created on : Dec 7, 2020, 8:49:45 AM
     Author     : DELL
 --%>
 
@@ -48,19 +48,59 @@
             </style>
         </head>
         <body>
-            <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-                <a class="nav-item" href="search.jsp">Search Page</a>
-                <a class="nav-item noti" href="MainController?btnAction=showNoti">My Notification</a>
+        <c:if test ="${empty sessionScope.User}">
+            <c:redirect url="login.jsp"></c:redirect>
+        </c:if>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="search.jsp">My social network</a>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="search.jsp">Search Page </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="MainController?btnAction=showNoti">My Notification</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="MainController?btnAction=createArticle">Create Article</a>
+                    </li>
+                </ul>
                 <a class="nav-item my-2" href="MainController?btnAction=Logout"><button class="btn btn-primary">Logout</button></a>
-            </nav>
-            <div class="container">
-            <c:if test="${ not empty sessionScope.User}">
-                <div class="col-5 m-3">
-                    <h3> Welcome ${sessionScope.User.name}</h3>
+            </div>
+        </nav>
+        <div class="container">
+            <c:if test="${sessionScope.User.statusId == 1}">
+                <div class="alert alert-danger" role="alert">
+                    You have not active this account yet! Click <a href="MainController?btnAction=activeAccountPage" class="alert-link">here</a> to active your account.
                 </div>
             </c:if>
-            <c:if test ="${empty sessionScope.User}">
-                <c:redirect url="login.jsp"></c:redirect>
+            <c:if test="${ not empty sessionScope.User}">
+                <div class="alert alert-primary" role="alert">
+                    Welcome ${sessionScope.User.name}
+                </div>
+            </c:if>
+            <c:if test="${not empty requestScope.deleteFail}">
+                <div class="alert alert-danger" role="alert">
+                    ${requestScope.deleteFail}
+                </div>
+            </c:if>
+            <c:if test="${not empty requestScope.deteleCommentFail}">
+                <div class="alert alert-danger" role="alert">
+                    ${requestScope.deteleCommentFail}
+                </div>
+            </c:if>
+            <c:if test="${not empty requestScope.activesuccess}">
+                <div class="alert alert-success" role="alert">
+                    ${requestScope.activesuccess}
+                </div>
+            </c:if>
+            <c:if test="${not empty requestScope.deleteSuccess}">
+                <div class="alert alert-success" role="alert">
+                    ${requestScope.deleteSuccess}
+                </div>
             </c:if>
             <c:set value="${sessionScope.User}" var="user"></c:set>
                 <div class="row justify-content-center mt-5">
@@ -75,7 +115,7 @@
                             </div>
                         </div>
                     </form>
-                    <a href="createArticle.jsp"><button class="btn btn-primary btn-block mt-3">Post an Article</button></a>
+                    <a href="MainController?btnAction=createArticle"><button class="btn btn-primary btn-block mt-3">Post an Article</button></a>
                 </div>
                 <c:if test="${not empty requestScope.searchResult}">
                     <c:set var="currentPage" value="${requestScope.currentPage}"></c:set>
@@ -93,7 +133,7 @@
                                     <a href="MainController?btnAction=ArticleDetail&txtId=${dto.postId}">
                                         <button class="btn btn-primary m-2 btn-detail">Detail</button>
                                     </a>
-                                    <c:if test="${user.mail==dto.mail}">
+                                    <c:if test="${user.mail==dto.mail  || user.role eq 'admin'}">
                                         <a href="MainController?btnAction=DeleteArticle&txtId=${dto.postId}&txtSearch=${requestScope.searchValue}">
                                             <button class="btn btn-primary m-2 btn-detail " onclick="return confirm('Are you sure you want to delete this post?');">Delete</button>
                                         </a>
@@ -110,13 +150,13 @@
                         </c:if>
                     </div>
                 </c:if>
-               
+
             </div> 
-                 <c:if test="${not empty requestScope.errorSearch}">
-                    <div class="alert alert-danger justify-center">
-                        ${requestScope.errorSearch}
-                    </div>
-                </c:if>
+            <c:if test="${not empty requestScope.errorSearch}">
+                <div class="alert alert-danger justify-center">
+                    ${requestScope.errorSearch}
+                </div>
+            </c:if>
         </div>
     </body>
 </html>

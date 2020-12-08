@@ -5,61 +5,65 @@
         <param-value>WEB-INF/log4j.properties</param-value>
     </context-param>
     <servlet>
-        <servlet-name>MainController</servlet-name>
-        <servlet-class>jlp0010.controller.MainController</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>LoginController</servlet-name>
-        <servlet-class>jlp0010.controller.LoginController</servlet-class>
+        <servlet-class>tunhm.controller.LoginController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RegisterController</servlet-name>
-        <servlet-class>jlp0010.controller.RegisterController</servlet-class>
+        <servlet-class>tunhm.controller.RegisterController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MainController</servlet-name>
+        <servlet-class>tunhm.controller.MainController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LogoutController</servlet-name>
-        <servlet-class>jlp0010.controller.LogoutController</servlet-class>
+        <servlet-class>tunhm.controller.LogoutController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SearchController</servlet-name>
-        <servlet-class>jlp0010.controller.SearchController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>CreateArticleController</servlet-name>
-        <servlet-class>jlp0010.controller.CreateArticleController</servlet-class>
+        <servlet-class>tunhm.controller.SearchController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ShowArticleDetailController</servlet-name>
-        <servlet-class>jlp0010.controller.ShowArticleDetailController</servlet-class>
+        <servlet-class>tunhm.controller.ShowArticleDetailController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>MakeEmotionController</servlet-name>
-        <servlet-class>jlp0010.controller.MakeEmotionController</servlet-class>
+        <servlet-name>CreateArticleController</servlet-name>
+        <servlet-class>tunhm.controller.CreateArticleController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>MakeCommentController</servlet-name>
-        <servlet-class>jlp0010.controller.MakeCommentController</servlet-class>
+        <servlet-class>tunhm.controller.MakeCommentController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MakeEmotionController</servlet-name>
+        <servlet-class>tunhm.controller.MakeEmotionController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteArticleController</servlet-name>
-        <servlet-class>jlp0010.controller.DeleteArticleController</servlet-class>
+        <servlet-class>tunhm.controller.DeleteArticleController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteCommentController</servlet-name>
-        <servlet-class>jlp0010.controller.DeleteCommentController</servlet-class>
+        <servlet-class>tunhm.controller.DeleteCommentController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ShowNotiController</servlet-name>
-        <servlet-class>jlp0010.controller.ShowNotiController</servlet-class>
+        <servlet-class>tunhm.controller.ShowNotiController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ShowNotiCorrespondingController</servlet-name>
-        <servlet-class>jlp0010.controller.ShowNotiCorrespondingController</servlet-class>
+        <servlet-class>tunhm.controller.ShowNotiCorrespondingController</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>MainController</servlet-name>
-        <url-pattern>/MainController</url-pattern>
-    </servlet-mapping>
+    <servlet>
+        <servlet-name>ResendActivationController</servlet-name>
+        <servlet-class>tunhm.controller.ResendActivationController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ActivateAccountController</servlet-name>
+        <servlet-class>tunhm.controller.ActivateAccountController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/LoginController</url-pattern>
@@ -67,6 +71,10 @@
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
         <url-pattern>/RegisterController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MainController</servlet-name>
+        <url-pattern>/MainController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LogoutController</servlet-name>
@@ -77,20 +85,20 @@
         <url-pattern>/SearchController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CreateArticleController</servlet-name>
-        <url-pattern>/CreateArticleController</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ShowArticleDetailController</servlet-name>
         <url-pattern>/ShowArticleDetailController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>MakeEmotionController</servlet-name>
-        <url-pattern>/MakeEmotionController</url-pattern>
+        <servlet-name>CreateArticleController</servlet-name>
+        <url-pattern>/CreateArticleController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MakeCommentController</servlet-name>
         <url-pattern>/MakeCommentController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MakeEmotionController</servlet-name>
+        <url-pattern>/MakeEmotionController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DeleteArticleController</servlet-name>
@@ -107,6 +115,14 @@
     <servlet-mapping>
         <servlet-name>ShowNotiCorrespondingController</servlet-name>
         <url-pattern>/ShowNotiCorrespondingController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResendActivationController</servlet-name>
+        <url-pattern>/ResendActivationController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ActivateAccountController</servlet-name>
+        <url-pattern>/ActivateAccountController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

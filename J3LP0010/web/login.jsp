@@ -1,6 +1,6 @@
 <%-- 
-    Document   : login
-    Created on : Sep 18, 2020, 2:19:12 AM
+    Document   : login.jsp
+    Created on : Dec 7, 2020, 8:47:37 AM
     Author     : DELL
 --%>
 
@@ -30,9 +30,15 @@
                         <article class="card-body">
                             <h4 class="card-title text-center mb-4 mt-1">Login</h4>
                             <hr>
-                            <c:if test="${not empty requestScope}">
-                                <p style="color: red">${requestScope.loginError}</p>
-                                <hr>
+                            <c:if test="${not empty requestScope.loginError}">
+                                <div class="alert alert-danger" role="alert">
+                                    ${requestScope.loginError}
+                                </div>
+                            </c:if>
+                            <c:if test="${not empty requestScope.registerSuccess}">
+                                <div class="alert alert-success" role="alert">
+                                    ${requestScope.registerSuccess}
+                                </div>
                             </c:if>
                             <form action="MainController" method="POST">
                                 <div class="form-group">

@@ -1,6 +1,6 @@
 <%-- 
     Document   : articleDetail
-    Created on : Sep 25, 2020, 6:07:42 PM
+    Created on : Dec 7, 2020, 8:49:24 AM
     Author     : DELL
 --%>
 
@@ -82,11 +82,31 @@
         <c:if test ="${empty sessionScope.User}">
             <c:redirect url="login.jsp"></c:redirect>
         </c:if>
-        <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-            <a class="nav-item" href="search.jsp">Search Page</a>
-            <a class="nav-item noti" href="MainController?btnAction=showNoti">My Notification</a>
-            <a class="nav-item my-2" href="MainController?btnAction=Logout"><button class="btn btn-primary">Logout</button></a>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="search.jsp">My social network</a>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="search.jsp">Search Page </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="MainController?btnAction=showNoti">My Notification</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="MainController?btnAction=createArticle">Create Article</a>
+                    </li>
+                </ul>
+                <a class="nav-item my-2" href="MainController?btnAction=Logout"><button class="btn btn-primary">Logout</button></a>
+            </div>
         </nav>
+           <c:if test="${not empty requestScope.deteleCmtSuccess}">
+                <div class="alert alert-success" role="alert">
+                    ${requestScope.deteleCmtSuccess}
+                </div>
+            </c:if> 
         <c:set var="dto" value="${sessionScope.ArticleDetail}"></c:set>
             <div class="custom-container container-fluid">
 
@@ -128,9 +148,9 @@
                                     <h6>${sessionScope.CommentOwner[mail]}</h6>
                                         <p class="date">${cmtDto.date}</p>
                                         <p>${cmtDto.cmtContent}</p>
-                                    <c:if test="${cmtDto.mail==sessionScope.User.mail}">
+                                    <c:if test="${cmtDto.mail==sessionScope.User.mail || sessionScope.User.role eq 'admin'}">
                                         <a href="MainController?btnAction=DeleteComment&txtCmtId=${cmtDto.cmtId}&txtId=${dto.postId}">
-                                            <button class="btn btn-primary m-2" onclick="return confirm('Are you sure you want to delete this comment?');">Delete</button>
+                                            <button class="btn btn-primary m-2" onclick="return confirm('Are you sure you want to delete this post?');">Delete</button>
                                         </a>
                                     </c:if>
                                     </div>
@@ -140,7 +160,7 @@
                                     <h6>${sessionScope.CommentOwner[mail]}</h6>
                                     <p class="date">${cmtDto.date}</p>
                                     <p>${cmtDto.cmtContent}</p>
-                                    <c:if test="${cmtDto.mail==sessionScope.User.mail}">
+                                    <c:if test="${cmtDto.mail==sessionScope.User.mail || sessionScope.User.role eq 'admin'}">
                                         <a href="MainController?btnAction=DeleteComment&txtCmtId=${cmtDto.cmtId}&txtId=${dto.postId}">
                                             <button class="btn btn-primary m-2" onclick="return confirm('Are you sure you want to delete this comment?');">Delete</button>
                                         </a>

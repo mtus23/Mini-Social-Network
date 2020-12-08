@@ -9,12 +9,14 @@ This is mini social networking have some basic feature:
 * Make emotions react
 * View notification
 * Delete a post or a comment
+* Activation account via email
 This project use Servlet as Controller and follow MVC2 model.
 
 ## System dependencies
 * Microsoft SQL Server 2018
 * JavaEE 5
 * Tommcat 8.0.27
+* JDK8
 
 ## Jars and library
 * JSTL 1.2.1
@@ -22,6 +24,7 @@ This project use Servlet as Controller and follow MVC2 model.
 * Log4j
 * commons-fileupload-1.4
 * commons-io-2.8.0
+* javax mail
 
 You can find via [Jars](https://github.com/mtus23/Mini-Social-Network/tree/main/J3LP0010/jars)
 
