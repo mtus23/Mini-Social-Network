@@ -10,6 +10,7 @@ This is mini social networking have some basic feature:
 * View notification
 * Delete a post or a comment
 * Activation account via email
+
 This project use Servlet as Controller and follow MVC2 model.
 
 ## System dependencies
