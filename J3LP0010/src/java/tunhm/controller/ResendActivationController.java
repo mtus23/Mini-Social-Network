@@ -48,7 +48,7 @@ public class ResendActivationController extends HttpServlet {
             HttpSession session = request.getSession();
             UserDAO userDao = new UserDAO();
             try {
-                UserDTO user = (UserDTO) session.getAttribute("User");
+                UserDTO user = (UserDTO) session.getAttribute("user");
                 EmailSender sender = new EmailSender(user.getMail());
                 String code = sender.randomCode();
                 userDao.updateActivationCode(code, user.getMail());

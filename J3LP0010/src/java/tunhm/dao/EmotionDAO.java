@@ -19,10 +19,17 @@ import tunhm.util.DBUtil;
  *
  * @author DELL
  */
-public class EmotionDAO implements Serializable{
+public class EmotionDAO implements Serializable {
+
     private Connection con;
     private PreparedStatement stm;
     private ResultSet rs;
+
+    public EmotionDAO() {
+        con = null;
+        stm = null;
+        rs = null;
+    }
 
     private void closeConnection() throws SQLException {
         if (rs != null) {
@@ -100,7 +107,7 @@ public class EmotionDAO implements Serializable{
     public HashMap<String, Integer> countEmotion(int postId) throws SQLException, ClassNotFoundException, NamingException {
         HashMap<String, Integer> result = null;
         try {
-            String sql = "SELECT (SELECT COUNT(likes) FROM tblEmotion WHERE likes = 1 AND postId = ?) AS Likes,\n"
+            String sql = "SELECT (SELECT COUNT(likes) FROM tblEmotion WHERE likes = 1 AND postId = ?) AS Likes, "
                     + "	(SELECT COUNT(dislikes) FROM tblEmotion WHERE dislikes = 1 AND postId = ?) AS Dislikes";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);

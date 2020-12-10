@@ -11,7 +11,8 @@ import java.io.Serializable;
  *
  * @author DELL
  */
-public class UserDTO implements Serializable{
+public class UserDTO implements Serializable {
+
     private String mail;
     private String name;
     private String password;
@@ -20,6 +21,21 @@ public class UserDTO implements Serializable{
     private String activeKey;
 
     public UserDTO() {
+        this.mail = "";
+        this.name = "";
+        this.password = "";
+        this.role = "";
+        this.statusId = 0;
+        this.activeKey = "";
+    }
+
+    public UserDTO(String mail, String name, String password, String role, int statusId, String activeKey) {
+        this.mail = mail;
+        this.name = name;
+        this.password = password;
+        this.role = role;
+        this.statusId = statusId;
+        this.activeKey = activeKey;
     }
 
     public UserDTO(String mail, String name, String password, String role, int statusId) {
@@ -49,7 +65,6 @@ public class UserDTO implements Serializable{
         this.password = password;
         this.activeKey = activeKey;
     }
-    
 
     public UserDTO(String mail, String name) {
         this.mail = mail;

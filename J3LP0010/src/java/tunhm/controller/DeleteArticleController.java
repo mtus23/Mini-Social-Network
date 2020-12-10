@@ -51,7 +51,7 @@ public class DeleteArticleController extends HttpServlet {
             NotiDAO notiDao = new NotiDAO();
             try {
                 HttpSession session = request.getSession();
-                UserDTO user = (UserDTO) session.getAttribute("User");
+                UserDTO user = (UserDTO) session.getAttribute("user");
                 int postId = Integer.parseInt(request.getParameter("txtId"));
                 ArticleDTO article = dao.getArticleById(postId);
                 if(article == null){

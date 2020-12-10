@@ -23,34 +23,28 @@
 
     </head>
     <body>
-        <c:if test ="${empty sessionScope.User}">
+        <c:if test ="${empty sessionScope.user}">
             <c:redirect url="login.jsp"></c:redirect>
         </c:if>
-        <c:if test="${sessionScope.User.statusId == 2}">
+        <c:if test="${sessionScope.user.statusId == 2}">
             <c:redirect url="search.jsp"></c:redirect>
         </c:if>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="search.jsp">My social network</a>
+            <a class="navbar-brand" href="MainController?btnAction=searchPage">My social network</a>
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item active">
-                        <a class="nav-link" href="search.jsp">Search Page </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="MainController?btnAction=showNoti">My Notification</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="MainController?btnAction=createArticle">Create Article</a>
+                        <a class="nav-link" href="MainController?btnAction=searchPage">Search Page </a>
                     </li>
                 </ul>
                 <a class="nav-item my-2" href="MainController?btnAction=Logout"><button class="btn btn-primary">Logout</button></a>
             </div>
         </nav>
         <div class="container">
-            <c:if test="${sessionScope.User.statusId == 1}">
+            <c:if test="${sessionScope.user.statusId == 1}">
                 <div class="alert alert-danger" role="alert">
                     You have not received activation email yet! Click <a href="MainController?btnAction=resendActivation" class="alert-link">here</a> to resend activation email.
                 </div>
@@ -68,6 +62,7 @@
             <div class="d-flex justify-content-center">
                 <form action="MainController" method="POST">
                     <h4>Activate account</h4>
+                    <hr>
                     <div class="form-group row">
                         <label>Active key: </label>
                         <input name="txtActivationCode" type="text" min="1" max="4" class="form-control"

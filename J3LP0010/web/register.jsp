@@ -28,7 +28,7 @@
                 <aside class="col-sm-4">
                     <div class="card align-center">
                         <article class="card-body">
-                            <h4 class="card-title text-center mb-4 mt-1">Login</h4>
+                            <h4 class="card-title text-center mb-4 mt-1">Register</h4>
                             <hr>
                             <form action="MainController" method="POST">
                                 <div class="form-group">
@@ -36,8 +36,14 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                                         </div>
-                                        <input class="form-control" placeholder="Mail" type="text" name="txtMail" value="">
-
+                                        <input class="form-control" placeholder="Mail" type="text" name="txtMail" 
+                                               <c:if test="${not empty param.txtMail}">
+                                                   value="${param.txtMail}"
+                                               </c:if>
+                                               <c:if test="${empty param.txtMail}">
+                                                   value=""
+                                               </c:if>
+                                               >                                               
                                     </div> 
                                 </div> 
                                 <c:if test="${not empty requestScope.registerError}">
@@ -48,7 +54,14 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                                         </div>
-                                        <input class="form-control" placeholder="Name" type="text" name="txtName" value="" >
+                                        <input class="form-control" placeholder="Name" type="text" name="txtName" 
+                                               <c:if test="${not empty param.txtName}">
+                                                   value="${param.txtName}"
+                                               </c:if>
+                                               <c:if test="${empty param.txtName}">
+                                                   value=""
+                                               </c:if>
+                                               >
 
                                     </div> 
                                 </div> 
@@ -84,6 +97,8 @@
                                     <hr>
                                     <input type="submit" class="btn btn-primary btn-block" name="btnAction" value="Register">
                                 </div> 
+                                    <hr>
+                                <a href="MainController?btnAction=loginPage">Return login page</a>
                             </form>
                         </article>
                     </div>

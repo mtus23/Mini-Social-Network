@@ -12,9 +12,13 @@ import java.io.Serializable;
  * @author DELL
  */
 public class RegisterErrorDTO implements Serializable{
-   String errorMail, errorName, errorPassword, errorConfirmPassword;
+   private String errorMail, errorName, errorPassword, errorConfirmPassword;
 
     public RegisterErrorDTO() {
+        this.errorMail = "";
+        this.errorName = "";
+        this.errorPassword = "";
+        this.errorConfirmPassword = "";
     }
 
     public RegisterErrorDTO(String errorMail, String errorName, String errorPassword, String errorConfirmPassword) {

@@ -79,35 +79,45 @@
             </style>
         </head>
         <body>
-        <c:if test ="${empty sessionScope.User}">
+        <c:if test ="${empty sessionScope.user}">
             <c:redirect url="login.jsp"></c:redirect>
+        </c:if>
+        <c:if test ="${sessionScope.user.statusId == 1}">
+            <c:redirect url="search.jsp"></c:redirect>
         </c:if>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="search.jsp">My social network</a>
+            <a class="navbar-brand" href="MainController?btnAction=searchPage">My social network</a>
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item active">
-                        <a class="nav-link" href="search.jsp">Search Page </a>
+                        <a class="nav-link" href="MainController?btnAction=searchPage">Search Page </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="MainController?btnAction=showNoti">My Notification</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="MainController?btnAction=createArticle">Create Article</a>
-                    </li>
+                    <c:if test="${sessionScope.user.role ne 'admin'}">
+                        <li class="nav-item">
+                            <a class="nav-link" href="MainController?btnAction=showNoti">My Notification</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="MainController?btnAction=createArticle">Create Article<span class="sr-only">(current)</span></a>
+                        </li>
+                    </c:if>
                 </ul>
                 <a class="nav-item my-2" href="MainController?btnAction=Logout"><button class="btn btn-primary">Logout</button></a>
             </div>
         </nav>
-           <c:if test="${not empty requestScope.deteleCmtSuccess}">
-                <div class="alert alert-success" role="alert">
-                    ${requestScope.deteleCmtSuccess}
-                </div>
-            </c:if> 
-        <c:set var="dto" value="${sessionScope.ArticleDetail}"></c:set>
+        <c:if test="${not empty requestScope.deteleCmtSuccess}">
+            <div class="alert alert-success" role="alert">
+                ${requestScope.deteleCmtSuccess}
+            </div>
+        </c:if>
+        <c:if test="${not empty requestScope.createArticleSuccess}">
+            <div class="alert alert-success" role="alert">
+                ${requestScope.createArticleSuccess}
+            </div>
+        </c:if>
+        <c:set var="dto" value="${requestScope.articleDetail}"></c:set>
             <div class="custom-container container-fluid">
 
                 <div class="row">
@@ -118,21 +128,21 @@
                 </div>
                 <div class="col-4 p-3 m-2 sideCol">
                     <div>
-                        <h5>${sessionScope.ArticleOwner.name}</h5>
+                        <h5>${requestScope.articleOwner.name}</h5>
                         <p class="date">${dto.date}</p>
                         <br>
                         <p class="content">${dto.description}</p>
                         <br>
-                        <p class="EmotionsCount"> ${sessionScope.EmotionCount['Likes']} Likes - ${sessionScope.EmotionCount['Dislikes']} Dislikes</p>
+                        <p class="EmotionsCount"> ${requestScope.emotionCount['Likes']} Likes - ${requestScope.emotionCount['Dislikes']} Dislikes</p>
                     </div>
                     <div>
                         <div class="row">
-                            <c:set var="userEmo" value="${sessionScope.UserEmotion}"></c:set>
-                            <a href="MainController?btnAction=MakeEmotion&txtId=${dto.postId}&txtMail=${sessionScope.User.mail}&txtEmo=Like">
+                            <c:set var="userEmo" value="${requestScope.userEmotion}"></c:set>
+                            <a href="MainController?btnAction=MakeEmotion&txtId=${dto.postId}&txtMail=${sessionScope.user.mail}&txtEmo=Like">
                                 <button type="button" class="btn ${userEmo.likes ? 'btn-primary' : 'btn-light'} ml-2">
                                     <span><i class="fa fa-thumbs-up"></i>
                                     </span> Like</button></a>
-                            <a href="MainController?btnAction=MakeEmotion&txtId=${dto.postId}&txtMail=${sessionScope.User.mail}&txtEmo=Dislike">
+                            <a href="MainController?btnAction=MakeEmotion&txtId=${dto.postId}&txtMail=${sessionScope.user.mail}&txtEmo=Dislike">
                                 <button type="button" class="btn ${userEmo.dislikes ? 'btn-primary' : 'btn-light'}">
                                     <span><i class="fa fa-thumbs-down"></i>
                                     </span> Dislike</button></a>
@@ -141,32 +151,32 @@
                         </div>
                     </div>
                     <div class="list-cmt">
-                        <c:forEach var="cmtDto" items="${sessionScope.ListComment}">
+                        <c:forEach var="cmtDto" items="${requestScope.listComment}">
                             <c:set var="mail" value="${cmtDto.mail}"></c:set>
-                                <c:if test="${requestScope.NotiCmtCorrespondingId eq cmtDto.cmtId}">
-                                    <div class="cmt m-2 p-2 border rounded notiComt">    
-                                    <h6>${sessionScope.CommentOwner[mail]}</h6>
-                                        <p class="date">${cmtDto.date}</p>
-                                        <p>${cmtDto.cmtContent}</p>
-                                    <c:if test="${cmtDto.mail==sessionScope.User.mail || sessionScope.User.role eq 'admin'}">
-                                        <a href="MainController?btnAction=DeleteComment&txtCmtId=${cmtDto.cmtId}&txtId=${dto.postId}">
-                                            <button class="btn btn-primary m-2" onclick="return confirm('Are you sure you want to delete this post?');">Delete</button>
-                                        </a>
-                                    </c:if>
-                                    </div>
-                                </c:if>
-                                <c:if test="${requestScope.NotiCmtCorrespondingId ne cmtDto.cmtId}">
-                                    <div class="cmt m-2 p-2 border rounded">
-                                    <h6>${sessionScope.CommentOwner[mail]}</h6>
+                            <c:if test="${requestScope.notiCmtCorrespondingId eq cmtDto.cmtId}">
+                                <div class="cmt m-2 p-2 border rounded notiComt">    
+                                    <h6>${requestScope.commentOwner[mail]}</h6>
                                     <p class="date">${cmtDto.date}</p>
                                     <p>${cmtDto.cmtContent}</p>
-                                    <c:if test="${cmtDto.mail==sessionScope.User.mail || sessionScope.User.role eq 'admin'}">
+                                    <c:if test="${cmtDto.mail==sessionScope.user.mail || sessionScope.user.role eq 'admin'}">
                                         <a href="MainController?btnAction=DeleteComment&txtCmtId=${cmtDto.cmtId}&txtId=${dto.postId}">
                                             <button class="btn btn-primary m-2" onclick="return confirm('Are you sure you want to delete this comment?');">Delete</button>
                                         </a>
                                     </c:if>
-                                    </div>
-                                </c:if>
+                                </div>
+                            </c:if>
+                            <c:if test="${requestScope.notiCmtCorrespondingId ne cmtDto.cmtId}">
+                                <div class="cmt m-2 p-2 border rounded">
+                                    <h6>${requestScope.commentOwner[mail]}</h6>
+                                    <p class="date">${cmtDto.date}</p>
+                                    <p>${cmtDto.cmtContent}</p>
+                                    <c:if test="${cmtDto.mail==sessionScope.user.mail || sessionScope.user.role eq 'admin'}">
+                                        <a href="MainController?btnAction=DeleteComment&txtCmtId=${cmtDto.cmtId}&txtId=${dto.postId}">
+                                            <button class="btn btn-primary m-2" onclick="return confirm('Are you sure you want to delete this comment?');">Delete</button>
+                                        </a>
+                                    </c:if>
+                                </div>
+                            </c:if>
                         </c:forEach>
 
                     </div>
@@ -174,8 +184,8 @@
                         <form action="MainController" class="m-2">
                             <textarea type="text" name="txtComment" id="comment" rows="3" required></textarea>
                             <br>
-                            <input type="hidden" name="txtMail" value="${sessionScope.User.mail}">
-                            <input type="hidden" name ="txtId" value="${sessionScope.ArticleDetail.postId}">
+                            <input type="hidden" name="txtMail" value="${sessionScope.user.mail}">
+                            <input type="hidden" name ="txtId" value="${requestScope.articleDetail.postId}">
                             <input class="btn btn-primary" type="submit" name="btnAction" value="Submit Comment">
                         </form>
                     </div>

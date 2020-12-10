@@ -22,10 +22,17 @@ import tunhm.util.DBUtil;
  *
  * @author DELL
  */
-public class CommentDAO implements Serializable{
+public class CommentDAO implements Serializable {
+
     private Connection con;
     private PreparedStatement stm;
     private ResultSet rs;
+
+    public CommentDAO() {
+        con = null;
+        stm = null;
+        rs = null;
+    }
 
     private void closeConnection() throws SQLException {
         if (rs != null) {
@@ -44,7 +51,7 @@ public class CommentDAO implements Serializable{
         try {
             String sql = "SELECT mail, cmtContent, date, cmtId"
                     + " FROM tblComment WHERE postId = ? "
-                    + "AND status = 2"
+                    + "AND status = 1"
                     + " ORDER BY date ASC";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);
@@ -70,7 +77,7 @@ public class CommentDAO implements Serializable{
     public boolean addComment(CommentDTO cmt) throws SQLException, ClassNotFoundException, NamingException {
         boolean check = false;
         try {
-            String sql = "INSERT INTO tblComment(postId, mail, cmtContent, date, status) VALUES(?,?,?,?,2)";
+            String sql = "INSERT INTO tblComment(postId, mail, cmtContent, date, status) VALUES(?,?,?,?,1)";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);
             stm.setInt(1, cmt.getPostId());
@@ -87,7 +94,7 @@ public class CommentDAO implements Serializable{
     public boolean deleteComment(int cmtId) throws SQLException, ClassNotFoundException, NamingException {
         boolean check = false;
         try {
-            String sql = "UPDATE tblComment SET status = 3 WHERE cmtId = ?";
+            String sql = "UPDATE tblComment SET status = 0 WHERE cmtId = ?";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);
             stm.setInt(1, cmtId);
@@ -97,21 +104,21 @@ public class CommentDAO implements Serializable{
         }
         return check;
     }
-    
-    public CommentDTO getCommentById(int cmtId, int postId) throws SQLException, ClassNotFoundException, NamingException{
+
+    public CommentDTO getCommentById(int cmtId, int postId) throws SQLException, ClassNotFoundException, NamingException {
         CommentDTO result = null;
-        try{
-            String sql = "SELECT mail FROM tblComment WHERE cmtId = ? AND status = 2 AND postId = ?";
+        try {
+            String sql = "SELECT mail FROM tblComment WHERE cmtId = ? AND status = 1 AND postId = ?";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);
             stm.setInt(1, cmtId);
             stm.setInt(2, postId);
             rs = stm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 String mail = rs.getString("mail");
                 result = new CommentDTO(cmtId, postId, mail);
             }
-        } finally{
+        } finally {
             closeConnection();
         }
         return result;

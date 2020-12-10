@@ -12,15 +12,26 @@ import java.sql.Date;
  *
  * @author DELL
  */
-public class CommentDTO implements Serializable{
+public class CommentDTO implements Serializable {
+
     private int cmtId;
     private int postId;
     private String mail;
     private String cmtContent;
     private Date date;
-    private int status;
+    private boolean status;
 
-    public CommentDTO(int cmtId, int postId, String mail, String cmtContent, Date date, int status) {
+    public CommentDTO() {
+        Date currentDate = new Date(System.currentTimeMillis());
+        this.cmtId = 0;
+        this.postId = 0;
+        this.mail = "";
+        this.cmtContent = "";
+        this.date = currentDate;
+        this.status = false;
+    }
+
+    public CommentDTO(int cmtId, int postId, String mail, String cmtContent, Date date, boolean status) {
         this.cmtId = cmtId;
         this.postId = postId;
         this.mail = mail;
@@ -49,8 +60,6 @@ public class CommentDTO implements Serializable{
         this.postId = postId;
         this.mail = mail;
     }
-    
-    
 
     public int getCmtId() {
         return cmtId;
@@ -92,11 +101,11 @@ public class CommentDTO implements Serializable{
         this.date = date;
     }
 
-    public int getStatus() {
+    public boolean isStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 

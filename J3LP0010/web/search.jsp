@@ -48,38 +48,40 @@
             </style>
         </head>
         <body>
-        <c:if test ="${empty sessionScope.User}">
+        <c:if test ="${empty sessionScope.user}">
             <c:redirect url="login.jsp"></c:redirect>
         </c:if>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="search.jsp">My social network</a>
+            <a class="navbar-brand" href="MainController?btnAction=searchPage">My social network</a>
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item active">
-                        <a class="nav-link" href="search.jsp">Search Page </a>
+                        <a class="nav-link" href="MainController?btnAction=searchPage">Search Page </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="MainController?btnAction=showNoti">My Notification</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="MainController?btnAction=createArticle">Create Article</a>
-                    </li>
+                <c:if test="${sessionScope.user.role eq 'member' && sessionScope.user.statusId == 2}">
+                        <li class="nav-item">
+                            <a class="nav-link" href="MainController?btnAction=showNoti">My Notification</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="MainController?btnAction=createArticle">Create Article<span class="sr-only">(current)</span></a>
+                        </li>
+                    </c:if>
                 </ul>
                 <a class="nav-item my-2" href="MainController?btnAction=Logout"><button class="btn btn-primary">Logout</button></a>
             </div>
         </nav>
         <div class="container">
-            <c:if test="${sessionScope.User.statusId == 1}">
+            <c:if test="${sessionScope.user.statusId == 1}">
                 <div class="alert alert-danger" role="alert">
                     You have not active this account yet! Click <a href="MainController?btnAction=activeAccountPage" class="alert-link">here</a> to active your account.
                 </div>
             </c:if>
-            <c:if test="${ not empty sessionScope.User}">
+            <c:if test="${ not empty sessionScope.user}">
                 <div class="alert alert-primary" role="alert">
-                    Welcome ${sessionScope.User.name}
+                    Welcome ${sessionScope.user.name}
                 </div>
             </c:if>
             <c:if test="${not empty requestScope.deleteFail}">
@@ -102,60 +104,62 @@
                     ${requestScope.deleteSuccess}
                 </div>
             </c:if>
-            <c:set value="${sessionScope.User}" var="user"></c:set>
-                <div class="row justify-content-center mt-5">
-                    <div class="col-5 form-group">
-                        <form action="MainController">
-                            <div class="form-row">
-                                <div class="col-9">
-                                    <input class="form-control" type="text" name="txtSearch" placeholder="Input keyword to search" value="${requestScope.searchValue}">
-                            </div>
-                            <div class="col-3">
-                                <input class="btn btn-primary"type="submit" name="btnAction" value="Search"> 
-                            </div>
-                        </div>
-                    </form>
-                    <a href="MainController?btnAction=createArticle"><button class="btn btn-primary btn-block mt-3">Post an Article</button></a>
-                </div>
-                <c:if test="${not empty requestScope.searchResult}">
-                    <c:set var="currentPage" value="${requestScope.currentPage}"></c:set>
-                    <c:set var="numberOfPage" value="${requestScope.numberOfPage}"></c:set>
-                    <c:set var="searchResult" value="${requestScope.searchResult}"></c:set>
-                        <div class="col-9 m-5 p-1 justify-center">
-                        <c:forEach var="dto" items="${requestScope.searchResult}">
-                            <div class="col-8 m-4 p-2 justify-center border border-dark rounded">
-                                <div class="justify-center">
-                                    <h6>${dto.title}</h6>
-                                    <p class="description">${dto.description}</p>
-                                    <img src="${images}${dto.image}" >
+            <c:if test = "${sessionScope.user.statusId != 1}">
+                <c:set value="${sessionScope.user}" var="user"></c:set>
+                    <div class="row justify-content-center mt-5">
+                        <div class="col-5 form-group">
+                            <form action="MainController">
+                                <div class="form-row">
+                                    <div class="col-9">
+                                        <input class="form-control" type="text" name="txtSearch" placeholder="Input keyword to search" value="${requestScope.searchValue}">
                                 </div>
-                                <div class="row justify-content-center">
-                                    <a href="MainController?btnAction=ArticleDetail&txtId=${dto.postId}">
-                                        <button class="btn btn-primary m-2 btn-detail">Detail</button>
-                                    </a>
-                                    <c:if test="${user.mail==dto.mail  || user.role eq 'admin'}">
-                                        <a href="MainController?btnAction=DeleteArticle&txtId=${dto.postId}&txtSearch=${requestScope.searchValue}">
-                                            <button class="btn btn-primary m-2 btn-detail " onclick="return confirm('Are you sure you want to delete this post?');">Delete</button>
+                                <div class="col-3">
+                                    <input class="btn btn-primary"type="submit" name="btnAction" value="Search"> 
+                                </div>
+                            </div>
+                        </form>
+                        <a href="MainController?btnAction=createArticle"><button class="btn btn-primary btn-block mt-3">Post an Article</button></a>
+                    </div>
+                    <c:if test="${not empty requestScope.searchResult}">
+                        <c:set var="currentPage" value="${requestScope.currentPage}"></c:set>
+                        <c:set var="numberOfPage" value="${requestScope.numberOfPage}"></c:set>
+                        <c:set var="searchResult" value="${requestScope.searchResult}"></c:set>
+                            <div class="col-9 m-5 p-1 justify-center">
+                            <c:forEach var="dto" items="${requestScope.searchResult}">
+                                <div class="col-8 m-4 p-2 justify-center border border-dark rounded">
+                                    <div class="justify-center">
+                                        <h6>${dto.title}</h6>
+                                        <p class="description">${dto.description}</p>
+                                        <img src="${images}${dto.image}" >
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <a href="MainController?btnAction=ArticleDetail&txtId=${dto.postId}">
+                                            <button class="btn btn-primary m-2 btn-detail">Detail</button>
                                         </a>
-                                    </c:if>
+                                        <c:if test="${user.mail==dto.mail  || user.role eq 'admin'}">
+                                            <a href="MainController?btnAction=DeleteArticle&txtId=${dto.postId}&txtSearch=${requestScope.searchValue}">
+                                                <button class="btn btn-primary m-2 btn-detail " onclick="return confirm('Are you sure you want to delete this post?');">Delete</button>
+                                            </a>
+                                        </c:if>
+                                    </div>
                                 </div>
-                            </div>
-                        </c:forEach>
-                        <c:if test="${currentPage != 1}">
-                            <a href="MainController?txtSearch=${requestScope.searchValue}&btnAction=Search&txtCurrentPage=${currentPage - 1}">Previous</a>
-                        </c:if>
-                        Page ${currentPage}/${numberOfPage}
-                        <c:if test="${currentPage < numberOfPage}">
-                            <a href="MainController?txtSearch=${requestScope.searchValue}&btnAction=Search&txtCurrentPage=${currentPage + 1}">Next</a>
-                        </c:if>
+                            </c:forEach>
+                            <c:if test="${currentPage != 1}">
+                                <a href="MainController?txtSearch=${requestScope.searchValue}&btnAction=Search&txtCurrentPage=${currentPage - 1}">Previous</a>
+                            </c:if>
+                            Page ${currentPage}/${numberOfPage}
+                            <c:if test="${currentPage < numberOfPage}">
+                                <a href="MainController?txtSearch=${requestScope.searchValue}&btnAction=Search&txtCurrentPage=${currentPage + 1}">Next</a>
+                            </c:if>
+                        </div>
+                    </c:if>
+
+                </div> 
+                <c:if test="${not empty requestScope.errorSearch}">
+                    <div class="alert alert-danger justify-center">
+                        ${requestScope.errorSearch}
                     </div>
                 </c:if>
-
-            </div> 
-            <c:if test="${not empty requestScope.errorSearch}">
-                <div class="alert alert-danger justify-center">
-                    ${requestScope.errorSearch}
-                </div>
             </c:if>
         </div>
     </body>

@@ -51,7 +51,7 @@ public class LoginController extends HttpServlet {
                 UserDAO dao = new UserDAO();
                 UserDTO dto = dao.checkLogin(mail, password);
                 if (dto != null) {
-                    session.setAttribute("User", dto);
+                    session.setAttribute("user", dto);
                     url = SEARCH_PAGE;
                 } else {
                     String msg = "Wrong mail or password";

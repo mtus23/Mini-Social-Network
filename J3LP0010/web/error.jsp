@@ -15,11 +15,11 @@
     </head>
     <body>
         <h1>Something went wrong</h1>
-        <c:if test="${empty sessionScope.User}">
-        <a href="login.jsp">Return login page</a>
+        <c:if test="${empty sessionScope.user}">
+        <a href="MainController?btnAction=loginPage">Return login page</a>
         </c:if>
-        <c:if test="${not empty sessionScope.User}">
-        <a href="search.jsp">Return search page</a>
+        <c:if test="${not empty sessionScope.user}">
+        <a href="MainController?btnAction=searchPage">Return search page</a>
         </c:if>
     </body>
 </html>

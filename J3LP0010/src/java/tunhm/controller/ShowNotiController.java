@@ -39,10 +39,11 @@ public class ShowNotiController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     private static final Logger LOG = Logger.getLogger(ShowNotiController.class);
     private final String SUCCESS = "showNotiList.jsp";
     private final String ERROR = "error.jsp";
+    private final int ROWS_PER_PAGE = 20;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -54,19 +55,31 @@ public class ShowNotiController extends HttpServlet {
                 HttpSession session = request.getSession();
                 UserDAO userDao = new UserDAO();
                 CommentDAO cmtDao = new CommentDAO();
-                UserDTO user = (UserDTO) session.getAttribute("User");
-                List<NotiDTO> listNoti = notiDao.getNotiByUser(user);
+                UserDTO user = (UserDTO) session.getAttribute("user");
+                String page = request.getParameter("txtCurrentPage");
+                int currentPage = 1;
+                if (page != null) {
+                    currentPage = Integer.parseInt(page);
+                }
+                int numOfNoti = notiDao.countNoti(user.getMail());
+                int numOfPage = (int) (Math.ceil((numOfNoti * 1.0) / ROWS_PER_PAGE));
+                if (currentPage > numOfPage || currentPage <= 0) {
+                    currentPage = 1;
+                }
+                List<NotiDTO> listNoti = notiDao.getNotiByUser(user, currentPage, ROWS_PER_PAGE);
                 if (listNoti != null) {
                     HashMap<Integer, String> mapCmtContent = cmtDao.getCmtContentByNotiUserMail(user.getMail());
                     if (mapCmtContent != null) {
                         request.setAttribute("mapCmtContent", mapCmtContent);
                     }
                     HashMap<String, String> mapName = new HashMap<>();
-                    request.setAttribute("listNoti", listNoti);
                     for (NotiDTO notiDto : listNoti) {
                         mapName.put(notiDto.getMail(), (userDao.getUser(notiDto.getMail())).getName());
                     }
                     request.setAttribute("mapNames", mapName);
+                    request.setAttribute("numberOfPage", numOfPage);
+                    request.setAttribute("currentPage", currentPage);
+                    request.setAttribute("listNoti", listNoti);
                 } else {
                     request.setAttribute("listNotiEmpty", "Your notification list is empty!!");
                 }

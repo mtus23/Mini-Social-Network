@@ -54,7 +54,7 @@ public class DeleteCommentController extends HttpServlet {
                 int cmtId = Integer.parseInt(request.getParameter("txtCmtId"));
                 int postId = Integer.parseInt(request.getParameter("txtId"));
                 CommentDTO commentDto = dao.getCommentById(cmtId, postId);
-                UserDTO user = (UserDTO) session.getAttribute("User");
+                UserDTO user = (UserDTO) session.getAttribute("user");
                 if (commentDto == null) {
                     request.setAttribute("deteleCommentFail", "Comment not exist");
                     url = SEARCH_PAGE;

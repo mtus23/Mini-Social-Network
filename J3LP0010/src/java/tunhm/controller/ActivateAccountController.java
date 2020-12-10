@@ -46,14 +46,14 @@ public class ActivateAccountController extends HttpServlet {
             HttpSession session = request.getSession();
             UserDAO userDao = new UserDAO();
             try{
-                UserDTO user = (UserDTO)session.getAttribute("User");
+                UserDTO user = (UserDTO)session.getAttribute("user");
                 String code = request.getParameter("txtActivationCode");
                 boolean check = userDao.checkActiveCode(code, user.getMail());
                 if(check){
                     userDao.activeAccount(user.getMail());
                     request.setAttribute("activesuccess", "Activation successfully!");
                     user.setStatusId(2);
-                    session.setAttribute("User", user);
+                    session.setAttribute("user", user);
                     url = SUCCESS;
                 }else{
                     request.setAttribute("activeFail", "Active code is wrong!");

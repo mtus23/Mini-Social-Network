@@ -27,22 +27,25 @@
                 margin-right: auto !important;
                 margin-left: 10px;
             }
-            
+
         </style>
     </head>
     <body>
-        <c:if test ="${empty sessionScope.User}">
+        <c:if test ="${empty sessionScope.user}">
             <c:redirect url="login.jsp"></c:redirect>
+        </c:if>
+        <c:if test ="${sessionScope.user.role eq 'admin' || sessionScope.user.statusId == 1}">
+            <c:redirect url="search.jsp"></c:redirect>
         </c:if>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="search.jsp">My social network</a>
+            <a class="navbar-brand" href="MainController?btnAction=searchPage">My social network</a>
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item active">
-                        <a class="nav-link" href="search.jsp">Search Page </a>
+                        <a class="nav-link" href="MainController?btnAction=searchPage">Search Page </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="MainController?btnAction=showNoti">My Notification</a>
@@ -59,12 +62,19 @@
             <div class="col mt-5 justify-center">
                 <form action="MainController" class ="need-validate" method="post" enctype="multipart/form-data" novalidate>
                     <div class="form-row">
-                        <input type ="hidden" name="txtMail" value="${sessionScope.User.mail}">
+                        <input type ="hidden" name="txtMail" value="${sessionScope.user.mail}">
                         <label for="title">Title</label>
-                        <input type="text" name="txtTitle" value="" id="title" class="form-control" maxlength="50" required="">
+                        <input type="text" name="txtTitle" value="" id="title" class="form-control" maxlength="50" required
+                               <c:if test="${not empty param.txtTitle}">
+                                   value="${param.txtTitle}"
+                               </c:if>
+                               <c:if test="${empty param.txtTitle}">
+                                   value=""
+                               </c:if>
+                               >
                         <div class="invalid-feedback">Please provide a title</div>
                         <label for="description">Description</label>
-                        <textarea class="form-control" id=description" row="3" name="txtDescription" required></textarea>
+                        <textarea class="form-control" id=description" row="3" name="txtDescription" required>${param.txtDescription}</textarea>
                         <div class="invalid-feedback">Please provide a description</div>
                         <label for="file">Image</label>
                         <div class="custom-file">
@@ -72,8 +82,8 @@
                             <label class="custom-file-label" for="inputGroupFile01" id="fileLabel">Choose file</label>
                             <div class="invalid-feedback">Please provide a image</div>
                         </div>
-                        <c:if test="${not empty requestScope.CreateArticleError}">
-                            <p style="color: red">${requestScope.CreateArticleError}</p>
+                        <c:if test="${not empty requestScope.createArticleError}">
+                            <p style="color: red">${requestScope.createArticleError}</p>
                         </c:if>
                         <input class="btn btn-primary mt-4 btn-block" type="submit" value="Create" name="btnAction" />
                     </div>
@@ -95,8 +105,7 @@
             if (!allowedExtensions.exec(filePath)) {
                 alert('Invalid file type');
                 fileInput.value = '';
-            }
-            else{
+            } else {
                 filePath.split(/(\\|\/)/g).pop();
                 document.getElementById("fileLabel").innerHTML = filePath;
             }

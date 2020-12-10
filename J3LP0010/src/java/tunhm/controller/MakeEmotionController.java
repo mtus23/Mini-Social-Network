@@ -32,6 +32,7 @@ public class MakeEmotionController extends HttpServlet {
     private static final Logger LOG = Logger.getLogger(MakeEmotionController.class);
     private final String SUCCESS = "ShowArticleDetailController";
     private final String ERROR = "error.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -83,15 +84,12 @@ public class MakeEmotionController extends HttpServlet {
                     dto = new EmotionDTO(postId, mail, isLike, isDislike, currentDate);
                     dao.createEmotion(dto);
                 }
-                ArticleDTO postOwner = artDao.getArticleById(postId);
-                if (!postOwner.getMail().equals(mail)) {
-                    if (isLike) {
-                        notiDto = new NotiDTO(postId, mail, currentDate, "likes");
-                    } else if (isDislike) {
-                        notiDto = new NotiDTO(postId, mail, currentDate, "dislikes");
-                    }
-                    notiDao.addNoti(notiDto);
+                if (isLike) {
+                    notiDto = new NotiDTO(postId, mail, currentDate, "likes");
+                } else if (isDislike) {
+                    notiDto = new NotiDTO(postId, mail, currentDate, "dislikes");
                 }
+                notiDao.addNoti(notiDto);
                 url = SUCCESS;
 
             } catch (SQLException | ClassNotFoundException | NamingException e) {

@@ -27,6 +27,9 @@ public class UserDAO implements Serializable {
     PasswordEncrypter pe = new PasswordEncrypter();
 
     public UserDAO() {
+        con = null;
+        stm = null;
+        rs = null;
     }
 
     private void closeConnection() throws SQLException {

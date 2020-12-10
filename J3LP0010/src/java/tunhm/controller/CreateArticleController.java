@@ -40,10 +40,10 @@ public class CreateArticleController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     private final static Logger LOG = Logger.getLogger(CreateArticleController.class);
-    private final String SEARCH = "search.jsp";
+    private final String DETAIL_PAGE = "ShowArticleDetailController";
     private final String ERROR = "createArticle.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -69,7 +69,7 @@ public class CreateArticleController extends HttpServlet {
                             imageName = itemName.substring(
                                     itemName.lastIndexOf("\\") + 1);
                             if (dao.checkImage(imageName)) {
-                                request.setAttribute("CreateArticleError", "Image Duplicated");
+                                request.setAttribute("createArticleError", "Image Duplicated");
                                 url = ERROR;
                                 break;
                             }
@@ -86,7 +86,9 @@ public class CreateArticleController extends HttpServlet {
                         Date currentDate = new Date(System.currentTimeMillis());
                         ArticleDTO dto = new ArticleDTO(imageName, tilte, description, mail, currentDate);
                         dao.createArticle(dto);
-                        url = SEARCH;
+                        request.setAttribute("createArticleSuccess", "Article is created successfully!");
+                        int postId = dao.getLastedArticleId();
+                        url = DETAIL_PAGE + "?txtId=" + postId;
                     }
                 }
             } catch (Exception ex) {

@@ -21,12 +21,16 @@ import tunhm.util.DBUtil;
  *
  * @author DELL
  */
-public class ArticleDAO implements Serializable{
+public class ArticleDAO implements Serializable {
+
     private Connection con;
     private PreparedStatement stm;
     private ResultSet rs;
 
     public ArticleDAO() {
+        con = null;
+        stm = null;
+        rs = null;
     }
 
     private void closeConnection() throws SQLException {
@@ -46,16 +50,17 @@ public class ArticleDAO implements Serializable{
         try {
             String sql = "SELECT postId , image , title , description , mail "
                     + "FROM tblArticle "
-                    + "WHERE description LIKE ? AND status = 2 "
+                    + "WHERE (description LIKE ? OR title = ? ) AND status = 1 "
                     + "ORDER BY date DESC "
-                    + "OFFSET ( ? - 1) * ? ROWS "
+                    + "OFFSET ? * ? ROWS "
                     + "FETCH NEXT ? ROWS ONLY";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);
             stm.setString(1, "%" + search + "%");
-            stm.setInt(2, currentPage);
-            stm.setInt(3, rowsPerPage);
+            stm.setString(2, "%" + search + "%");
+            stm.setInt(3, currentPage - 1);
             stm.setInt(4, rowsPerPage);
+            stm.setInt(5, rowsPerPage);
             rs = stm.executeQuery();
             while (rs.next()) {
                 if (result == null) {
@@ -79,7 +84,7 @@ public class ArticleDAO implements Serializable{
         boolean check = false;
         try {
             String sql = "INSERT INTO tblArticle(title, image, mail, date, description, status)"
-                    + " VALUES(?,?,?,?,?,2)";
+                    + " VALUES(?,?,?,?,?,1)";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);
             stm.setNString(1, dto.getTitle());
@@ -99,7 +104,7 @@ public class ArticleDAO implements Serializable{
         try {
             String sql = "SELECT title, image, mail, date, description "
                     + "FROM tblArticle "
-                    + "WHERE postId = ? AND status = 2";
+                    + "WHERE postId = ? AND status = 1";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);
             stm.setInt(1, id);
@@ -140,7 +145,7 @@ public class ArticleDAO implements Serializable{
         try {
             String sql = "SELECT COUNT(postId) AS NumberOfArticle "
                     + "FROM tblArticle "
-                    + "WHERE description LIKE ? AND status = 2";
+                    + "WHERE description LIKE ? AND status = 1";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);
             stm.setString(1, "%" + search + "%");
@@ -157,7 +162,7 @@ public class ArticleDAO implements Serializable{
     public boolean deleteArticle(int postId) throws SQLException, ClassNotFoundException, NamingException {
         boolean check = false;
         try {
-            String sql = "UPDATE tblArticle SET status = 3 WHERE postId = ?";
+            String sql = "UPDATE tblArticle SET status = 0 WHERE postId = ?";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);
             stm.setInt(1, postId);
@@ -166,5 +171,21 @@ public class ArticleDAO implements Serializable{
             closeConnection();
         }
         return check;
+    }
+
+    public int getLastedArticleId() throws SQLException, ClassNotFoundException, NamingException {
+        int result = 0;
+        String sql = "SELECT TOP 1 postId FROM tblArticle ORDER BY postId DESC";
+        try {
+            con = DBUtil.getConnection();
+            stm = con.prepareStatement(sql);
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                result = rs.getInt("postId");
+            }
+        } finally {
+            closeConnection();
+        }
+        return result;
     }
 }

@@ -12,13 +12,24 @@ import java.sql.Date;
  *
  * @author DELL
  */
-public class EmotionDTO implements Serializable{
+public class EmotionDTO implements Serializable {
+
     private int id;
     private int postId;
     private String mail;
     private boolean likes;
     private boolean dislikes;
     private Date date;
+
+    public EmotionDTO() {
+        Date currentDate = new Date(System.currentTimeMillis());
+        this.id = 0;
+        this.postId = 0;
+        this.mail = "";
+        this.likes = false;
+        this.dislikes = false;
+        this.date = currentDate;
+    }
 
     public EmotionDTO(int id, int postId, String mail, boolean likes, boolean dislikes, Date date) {
         this.id = id;
@@ -43,9 +54,7 @@ public class EmotionDTO implements Serializable{
         this.dislikes = dislikes;
         this.date = date;
     }
-    
 
-    
     public int getId() {
         return id;
     }
@@ -93,6 +102,5 @@ public class EmotionDTO implements Serializable{
     public void setDate(Date date) {
         this.date = date;
     }
-    
-    
+
 }

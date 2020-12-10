@@ -38,16 +38,16 @@ public class MakeCommentController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     private static final Logger LOG = Logger.getLogger(MakeCommentController.class);
     private final String ERROR = "error.jsp";
     private final String SUCCESS = "ShowArticleDetailController";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-           String url = ERROR;
+            String url = ERROR;
             CommentDAO cmtDao = new CommentDAO();
             String mail = request.getParameter("txtMail");
             int postId = Integer.parseInt(request.getParameter("txtId"));
@@ -60,12 +60,9 @@ public class MakeCommentController extends HttpServlet {
                 CommentDTO dto = new CommentDTO(postId, mail, cmt, currentDate);
                 boolean check = cmtDao.addComment(dto);
                 if (check) {
-                    ArticleDTO postOwner = artDao.getArticleById(postId);
-                    if (!postOwner.getMail().equals(mail)) {
-                        int cmtId = cmtDao.getLastCommentId();
-                        notiDto = new NotiDTO(postId, mail, currentDate, "comments", cmtId);
-                        notiDao.addNoti(notiDto);
-                    }
+                    int cmtId = cmtDao.getLastCommentId();
+                    notiDto = new NotiDTO(postId, mail, currentDate, "comments", cmtId);
+                    notiDao.addNoti(notiDto);
                     url = SUCCESS;
                 }
             } catch (SQLException | NamingException | ClassNotFoundException e) {

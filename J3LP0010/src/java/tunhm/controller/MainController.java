@@ -48,6 +48,9 @@ public class MainController extends HttpServlet {
     private final String ACTIVE_ACCOUNT_PAGE ="activeAccount.jsp";
     private final String RESEND_ACTIVATION = "ResendActivationController";
     private final String ACTIVATE_ACCOUNT ="ActivateAccountController";
+    private final String LOGIN_PAGE ="login.jsp";
+    private final String SEARCH_PAGE ="search.jsp";
+    private final String REGISTER_PAGE ="register.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -61,7 +64,10 @@ public class MainController extends HttpServlet {
                     url = CREATE_ARTICLE;
                 } else {
                     String action = request.getParameter("btnAction");
-                    if (action.equals("Login")) {
+                    if(action == null){
+                        url = LOGIN_PAGE;
+                    }
+                    else if (action.equals("Login")) {
                         url = LOGIN;
                     } else if (action.equals("Register")) {
                         url = REGISTER;
@@ -93,6 +99,12 @@ public class MainController extends HttpServlet {
                         url = RESEND_ACTIVATION;
                     } else if(action.equals("activation")){
                         url = ACTIVATE_ACCOUNT;
+                    } else if(action.equals("searchPage")){
+                        url = SEARCH_PAGE;
+                    } else if(action.equals("loginPage")){
+                        url = LOGIN_PAGE;
+                    } else if(action.equals("registerPage")){
+                        url = REGISTER_PAGE;
                     }
                 }
             } catch (Exception e) {

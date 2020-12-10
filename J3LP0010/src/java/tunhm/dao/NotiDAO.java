@@ -22,10 +22,17 @@ import tunhm.util.DBUtil;
  *
  * @author DELL
  */
-public class NotiDAO implements Serializable{
+public class NotiDAO implements Serializable {
+
     private Connection con;
     private PreparedStatement stm;
     private ResultSet rs;
+
+    public NotiDAO() {
+        con = null;
+        stm = null;
+        rs = null;
+    }
 
     private void closeConnection() throws SQLException {
         if (rs != null) {
@@ -43,7 +50,7 @@ public class NotiDAO implements Serializable{
         boolean check = false;
         try {
             String sql = "INSERT INTO tblNoti(postId, mail, date, type, cmtId, status) "
-                    + "VALUES(?,?,?,?,?,5)";
+                    + "VALUES(?,?,?,?,?,?)";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);
             stm.setInt(1, noti.getPostId());
@@ -51,6 +58,7 @@ public class NotiDAO implements Serializable{
             stm.setDate(3, noti.getDate());
             stm.setString(4, noti.getType());
             stm.setInt(5, noti.getCmtId());
+            stm.setString(6, "unread");
             check = stm.executeUpdate() > 0;
         } finally {
             closeConnection();
@@ -58,15 +66,20 @@ public class NotiDAO implements Serializable{
         return check;
     }
 
-    public List<NotiDTO> getNotiByUser(UserDTO user) throws SQLException, ClassNotFoundException, NamingException {
+    public List<NotiDTO> getNotiByUser(UserDTO user, int currentPage, int rowsPerPage) throws SQLException, ClassNotFoundException, NamingException {
         List<NotiDTO> result = null;
         try {
             String sql = "SELECT notiId, tblArticle.postId, tblNoti.date, type, tblNoti.mail , tblNoti.status , cmtId "
                     + "FROM tblNoti JOIN tblArticle on tblArticle.postId = tblNoti.postId "
-                    + "WHERE tblNoti.status != 3 AND tblArticle.mail = ? ORDER BY date DESC";
+                    + "WHERE tblNoti.status != 'delete' AND tblArticle.mail = ? ORDER BY date DESC "
+                    + "OFFSET ? * ? ROWS "
+                    + "FETCH NEXT ? ROWS ONLY";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);
             stm.setString(1, user.getMail());
+            stm.setInt(2, currentPage - 1);
+            stm.setInt(3, rowsPerPage);
+            stm.setInt(4, rowsPerPage);
             rs = stm.executeQuery();
             while (rs.next()) {
                 if (result == null) {
@@ -77,7 +90,7 @@ public class NotiDAO implements Serializable{
                 Date date = rs.getDate("date");
                 String type = rs.getString("type");
                 String mail = rs.getString("mail");
-                int status = rs.getInt("status");
+                String status = rs.getString("status");
                 int cmtId = rs.getInt("cmtId");
                 result.add(new NotiDTO(notiId, postId, mail, date, type, status, cmtId));
             }
@@ -91,7 +104,7 @@ public class NotiDAO implements Serializable{
         NotiDTO result = null;
         try {
             String sql = "SELECT notiId, date FROM tblNoti "
-                    + "WHERE postId = ? AND mail = ? AND type = ? AND status != 3";
+                    + "WHERE postId = ? AND mail = ? AND type = ? AND status != 'delete'";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);
             stm.setInt(1, postId);
@@ -112,7 +125,7 @@ public class NotiDAO implements Serializable{
     public boolean deleteNoti(NotiDTO dto) throws SQLException, ClassNotFoundException, NamingException {
         boolean check = false;
         try {
-            String sql = "UPDATE tblNoti SET status = 3 WHERE notiId = ?";
+            String sql = "UPDATE tblNoti SET status = 'delete' WHERE notiId = ?";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);
             stm.setInt(1, dto.getNotiId());
@@ -144,7 +157,7 @@ public class NotiDAO implements Serializable{
     public boolean editNotiAsRead(int notiId) throws SQLException, ClassNotFoundException, NamingException {
         boolean check = false;
         try {
-            String sql = "UPDATE tblNoti SET status = 4 WHERE notiId = ?";
+            String sql = "UPDATE tblNoti SET status = 'read' WHERE notiId = ?";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);
             stm.setInt(1, notiId);
@@ -154,11 +167,11 @@ public class NotiDAO implements Serializable{
         }
         return check;
     }
-    
+
     public boolean deleteNotiInPost(int postId) throws SQLException, ClassNotFoundException, NamingException {
         boolean check = false;
         try {
-            String sql = "UPDATE tblNoti SET status = 3 WHERE postId = ?";
+            String sql = "UPDATE tblNoti SET status = 'delete' WHERE postId = ?";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);
             stm.setInt(1, postId);
@@ -168,11 +181,11 @@ public class NotiDAO implements Serializable{
         }
         return check;
     }
-    
+
     public boolean deleteNotiCmt(int cmtId) throws SQLException, ClassNotFoundException, NamingException {
         boolean check = false;
         try {
-            String sql = "UPDATE tblNoti SET status = 3 WHERE cmtId = ?";
+            String sql = "UPDATE tblNoti SET status = 'delete' WHERE cmtId = ?";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);
             stm.setInt(1, cmtId);
@@ -181,5 +194,24 @@ public class NotiDAO implements Serializable{
             closeConnection();
         }
         return check;
+    }
+
+    public int countNoti(String mail) throws SQLException, ClassNotFoundException, NamingException {
+        int result = 0;
+        try {
+            String sql = "SELECT COUNT(notiId) AS NumberOfNoti "
+                    + "FROM tblNoti JOIN tblArticle on tblArticle.postId = tblNoti.postId "
+                    + "WHERE tblNoti.status != 'delete' AND tblArticle.mail = ?";
+            con = DBUtil.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setString(1, mail);
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                result = rs.getInt("NumberOfNoti");
+            }
+        } finally {
+            closeConnection();
+        }
+        return result;
     }
 }

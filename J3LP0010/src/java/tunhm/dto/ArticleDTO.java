@@ -18,13 +18,21 @@ public class ArticleDTO implements Serializable{
     private String title;
     private String description;
     private String mail;
-    private int status;
+    private boolean status;
     private Date date;
 
     public ArticleDTO() {
+        Date currentDate = new Date(System.currentTimeMillis());
+        this.postId = 0;
+        this.image = "";
+        this.title = "";
+        this.description = "";
+        this.mail = "";
+        this.status = false;
+        this.date = currentDate;
     }
 
-    public ArticleDTO(int postId, String image, String title, String description, String mail, int status, Date date) {
+    public ArticleDTO(int postId, String image, String title, String description, String mail, boolean status, Date date) {
         this.postId = postId;
         this.image = image;
         this.title = title;
@@ -106,13 +114,14 @@ public class ArticleDTO implements Serializable{
         this.mail = mail;
     }
 
-    public int getStatus() {
+    public boolean isStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
+
 
     public Date getDate() {
         return date;

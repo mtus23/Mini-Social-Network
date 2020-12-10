@@ -12,16 +12,28 @@ import java.sql.Date;
  *
  * @author DELL
  */
-public class NotiDTO implements Serializable{
+public class NotiDTO implements Serializable {
+
     private int notiId;
     private int postId;
     private String mail;
     private Date date;
     private String type;
-    private int status;
+    private String status;
     private int cmtId;
 
-    public NotiDTO(int notiId, int postId, String mail, Date date, String type, int status) {
+    public NotiDTO() {
+        Date currentDate = new Date(System.currentTimeMillis());
+        this.notiId = 0;
+        this.postId = 0;
+        this.mail = "";
+        this.date = currentDate;
+        this.type = "";
+        this.status = "";
+        this.cmtId = 0;
+    }
+
+    public NotiDTO(int notiId, int postId, String mail, Date date, String type, String status) {
         this.notiId = notiId;
         this.postId = postId;
         this.mail = mail;
@@ -45,7 +57,7 @@ public class NotiDTO implements Serializable{
         this.type = type;
     }
 
-    public NotiDTO(int notiId, int postId, String mail, Date date, String type, int status, int cmtId) {
+    public NotiDTO(int notiId, int postId, String mail, Date date, String type, String status, int cmtId) {
         this.notiId = notiId;
         this.postId = postId;
         this.mail = mail;
@@ -108,11 +120,11 @@ public class NotiDTO implements Serializable{
         this.type = type;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

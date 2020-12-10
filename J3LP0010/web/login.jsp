@@ -61,7 +61,7 @@
                                     <input type="submit" class="btn btn-primary btn-block" name="btnAction" value="Login">
                                 </div> 
                                 <hr>
-                                <p class="text-center"><a href="register.jsp" class="btn btn-primary btn-block">Register</button></a></p>
+                                <a href="MainController?btnAction=registerPage" class="btn btn-primary btn-block">Register</a>
                             </form>
                         </article>
                     </div>

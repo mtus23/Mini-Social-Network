@@ -61,10 +61,7 @@ public class ShowArticleDetailController extends HttpServlet {
                 ArticleDTO dto = dao.getArticleById(articleId);
                 if (dto != null) {
                     HashMap<String, String> cmtOwner = new HashMap<>();
-                    if (session.getAttribute("ListComment") != null) {
-                        session.removeAttribute("ListComment");
-                    }
-                    UserDTO user = (UserDTO) session.getAttribute("User");
+                    UserDTO user = (UserDTO) session.getAttribute("user");
                     HashMap<String, Integer> count = emoDao.countEmotion(dto.getPostId());
                     UserDTO articleOwner = userDao.getUser(dto.getMail());
                     List<CommentDTO> listCmt = cmtDao.getCommentInPost(articleId);
@@ -72,15 +69,15 @@ public class ShowArticleDetailController extends HttpServlet {
                         for (CommentDTO cmt : listCmt) {
                             cmtOwner.put(cmt.getMail(), userDao.getUser(cmt.getMail()).getName());
                         }
-                        session.setAttribute("ListComment", listCmt);
-                        session.setAttribute("CommentOwner", cmtOwner);
+                        request.setAttribute("listComment", listCmt);
+                        request.setAttribute("commentOwner", cmtOwner);
 
                     }
                     EmotionDTO emo = emoDao.findEmo(articleId, user.getMail());
-                    session.setAttribute("UserEmotion", emo);
-                    session.setAttribute("ArticleDetail", dto);
-                    session.setAttribute("EmotionCount", count);
-                    session.setAttribute("ArticleOwner", articleOwner);
+                    request.setAttribute("userEmotion", emo);
+                    request.setAttribute("articleDetail", dto);
+                    request.setAttribute("emotionCount", count);
+                    request.setAttribute("articleOwner", articleOwner);
                     url = DETAIL;
                 } else {
                     url = NOT_FOUND;

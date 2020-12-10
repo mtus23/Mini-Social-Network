@@ -48,7 +48,7 @@ public class ShowNotiCorrespondingController extends HttpServlet {
                 int notiId = Integer.parseInt(request.getParameter("txtNotiId"));
                 NotiDTO notiDtoCmt = notiDao.getNotiCmtId(notiId);
                 if (notiDtoCmt != null) {
-                    request.setAttribute("NotiCmtCorrespondingId", notiDtoCmt.getCmtId());
+                    request.setAttribute("notiCmtCorrespondingId", notiDtoCmt.getCmtId());
                 }
                 notiDao.editNotiAsRead(notiId);
                 url = DETAIL;
